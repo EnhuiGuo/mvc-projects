@@ -1,0 +1,663 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.PartViewModel
+
+<div class="row" style="padding: 0;">
+    <nav id="partsNav" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right" style="padding-top: 6px;">
+                    <li><button id="updatePartBtn" class="btn btn-sm btn-submit pull-right" title="Update Part" value="Update">Update</button></li>
+                    <li><button id="cancelUpdatePartBtn" class="btn btn-sm btn-cancel pull-right" title="Cancel Update" value="Cancel Update">Cancel</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="col-md-9 centered">
+    <h4 class="text-noticed"></h4>
+</div>
+
+<form id="updatePartForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel-group">
+                <div class="row">
+                    <div class="col-md-9 centered">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="clearfix">
+                                    <h3 class="panel-title">
+                                        Part Detail
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @if (Model.IsProjectPart)
+                                        {
+                                            <div class="col-md-12" style="margin-bottom:5px;">
+                                                <span class="text-noticed col-md-12">Note: Temporary Part</span>
+                                            </div>
+                                        }
+                                        <div class="col-md-5">
+                                            @Html.TextBoxFor(m => m.ProjectPartId, new { @id = "projectPartId", @class = "hidden" })
+                                            @Html.TextBoxFor(m => m.PartId, new { @id = "partId", @class = "hidden" })
+                                            @Html.TextBoxFor(m => m.AnnualUsage, new { @id = "annualUsage", @class = "hidden" })
+                                            @Html.TextBoxFor(m => m.FoundryOrderId, new { @id = "foundryOrderId", @class = "hidden" })
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.PartNumber, new { @class = "control-label col-md-3" })
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(model => model.PartNumber, new { @id = "partNumber", @class = "form-control", @required = "required" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.PartDescription, new { @class = "control-label col-md-3" })
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(model => model.PartDescription, new { @id = "partDescription", @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if (!Model.IsProjectPart)
+                                        {
+                                            <div class="col-md-2">
+                                                <div class="checkbox checkbox-success" style="margin-top: 2px;">
+                                                    <input type="checkbox" id="isActive" readonly>
+                                                    <label for="isActive" class="control-label col-md-5">
+                                                        <strong>Active</strong>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9 centered">
+            <div class="panel panel-default">
+                <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree" style="background-color: white">
+                    <h3 class="panel-title accordion-toggle">
+                        Main Information
+                        <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                    </h3>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CustomerId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.CustomerId, Model.SelectableCustomers, new { @id = "customerId", @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.AccountCode, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.AccountCode, new { @id = "accountCode", @class = "form-control", @readonly = "readyonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.PartTypeId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.PartTypeId, Model.SelectablePartTypes, new { @id = "partTypeId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.PartStatusId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.PartStatusId, Model.SelectablePartStates, new { @id = "partStatusId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.Label("Projects", new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.ProjectId, Model.SelectableProjects, new { @id = "projectId", @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group" style="padding-left: 15px;display:inline-block">
+                                            <div class="checkbox checkbox-success">
+                                                <input type="checkbox" id="isRawA">
+                                                <label for="isRawA" class="control-label">
+                                                    <strong>Raw</strong>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="padding-left: 15px;display:inline-block">
+                                            <div class="checkbox checkbox-success">
+                                                <input type="checkbox" id="isMachinedA">
+                                                <label for="isMachinedA" class="control-label">
+                                                    <strong>Machined</strong>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.FoundryId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.FoundryId, Model.SelectableFoundries, new { @id = "foundryId", @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.SubFoundryId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.SubFoundryId, Model.SelectableFoundries, new { @id = "subFoundryId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.PaymentTermId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.PaymentTermId, Model.SelectablePaymentTerms, new { @id = "paymentTermId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.ShipmentTermId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.ShipmentTermId, Model.SelectableShipmentTerms, new { @id = "shipmentTermId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.DestinationId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.DestinationId, Model.SelectableDestinations, new { @id = "destinationId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.HtsNumberId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.HtsNumberId, Model.SelectableHtsNumbers, new { @id = "htsNumberId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9 centered">
+            <div class="panel panel-default">
+                <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFour" style="background-color: white">
+                    <h3 class="panel-title accordion-toggle">
+                        Rates and Measurements
+                        <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                    </h3>
+                </div>
+                <div id="collapseFour" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Weight, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(model => model.Weight, new { @id = "weight", @class = "form-control", @readonly = "readyonly" })
+                                                <span class="input-group-addon">lbs</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Cost, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                                @Html.TextBoxFor(model => model.Cost, new { @id = "cost", @class = "form-control", @readonly = "readyonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                                @Html.TextBoxFor(model => model.Price, new { @id = "price", @class = "form-control", @readonly = "readyonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.AdditionalCost, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                                @Html.TextBoxFor(model => model.AdditionalCost, new { @id = "additionalCost", @class = "form-control", type = "number", min = 0 })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.SurchargeId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.SurchargeId, Model.SelectableSurcharge, new { @id = "surchargeId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.PalletQuantity, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.PalletQuantity, new { @id = "palletQuantity", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.PalletWeight, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(model => model.PalletWeight, new { @id = "palletWeight", @class = "form-control" })
+                                                <span class="input-group-addon">lbs</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9 centered">
+            <div class="panel panel-default">
+                <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFive" style="background-color: white">
+                    <h3 class="panel-title accordion-toggle">
+                        Sales
+                        <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                    </h3>
+                </div>
+                <div id="collapseFive" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.YearlySalesTotal, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.YearlySalesTotal, new { @id = "yearlySalesTotal", @class = "form-control", @readonly = "readyonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.SixtyDaysSalesTotal, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.SixtyDaysSalesTotal, new { @id = "sixtyDaysSalesTotal", @class = "form-control", @readonly = "readyonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.MonthlySalesTotal, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.MonthlySalesTotal, new { @id = "monthlySalesTotal", @class = "form-control", @readonly = "readyonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.AverageDailySales, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.AverageDailySales, new { @id = "salesAverageDailySales", @class = "form-control", @readonly = "readyonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9 centered">
+            <div class="panel panel-default">
+                <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSix" style="background-color: white">
+                    <h3 class="panel-title accordion-toggle">
+                        Inventory
+                        <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                    </h3>
+                </div>
+                <div id="collapseSix" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.QuantityOnHand, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.QuantityOnHand, new { @id = "quantityOnHand", @class = "form-control", @readonly = "readyonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CustomerAddressId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <select id="customerAddressId" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.SiteId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.SiteId, Model.SelectableSites, new { @id = "siteId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br /><br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.MinimumQuantity, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.MinimumQuantity, new { @id = "minimumQuantity", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.SafetyQuantity, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.SafetyQuantity, new { @id = "safetyQuantity", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.OrderCycle, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.OrderCycle, new { @id = "orderCycle", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.LeadTime, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.LeadTime, new { @id = "leadTime", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.TransitTime, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.TransitTime, new { @id = "transitTime", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.ReorderPoint, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.ReorderPoint, new { @id = "reorderPoint", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.AverageDailySales, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.AverageDailySales, new { @id = "inventoryAverageDailySales", @class = "form-control", @readonly = "readyonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9 centered">
+            <div class="panel panel-default">
+                <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSeven" style="background-color: white">
+                    <h3 class="panel-title accordion-toggle">
+                        Specifications
+                        <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                    </h3>
+                </div>
+                <div id="collapseSeven" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group" style="padding-left: 15px;">
+                                        <div class="checkbox checkbox-success">
+                                            <input type="checkbox" id="isRawB">
+                                            <label for="isRawB" class="control-label col-md-2">
+                                                <strong>Raw</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="padding-left: 15px;">
+                                        <div class="checkbox checkbox-success">
+                                            <input type="checkbox" id="isMachinedB">
+                                            <label for="isMachinedB" class="control-label col-md-2">
+                                                <strong>Machined</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Fixture</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.MaterialId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.MaterialId, Model.SelectableMaterial, new { @id = "materialId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.SpecificationMaterialId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.SpecificationMaterialId, Model.SelectableSpecificationMaterial, new { @id = "specificationMaterialId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CoatingTypeId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.CoatingTypeId, Model.SelectableCoatingTypes, new { @id = "coatingTypeId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.FixtureDateStr, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.FixtureDateStr, new { @id = "fixtureDate", @class = "form-control datepicker" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.FixtureCost, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                                @Html.TextBoxFor(model => model.FixtureCost, new { @id = "fixtureCost", @class = "form-control", type = "number", min = 0 })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.FixturePrice, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                                @Html.TextBoxFor(model => model.FixturePrice, new { @id = "fixturePrice", @class = "form-control", type = "number", min = 0 })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5>Pattern</h5>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.PatternDateStr, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(model => model.PatternDateStr, new { @id = "patternDate", @class = "form-control datepicker" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.PatternCost, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                                @Html.TextBoxFor(model => model.PatternCost, new { @id = "patternCost", @class = "form-control", type = "number", min = 0 })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.PatternPrice, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                                @Html.TextBoxFor(model => model.PatternPrice, new { @id = "patternPrice", @class = "form-control", type = "number", min = 0 })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.PatternMaterialId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.PatternMaterialId, Model.SelectablePatternMaterial, new { @id = "patternMaterialId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="padding-left: 15px;">
+                                                <div class="checkbox checkbox-success">
+                                                    <input type="checkbox" id="isFamilyPattern">
+                                                    <label for="isFamilyPattern" class="control-label col-md-8">
+                                                        <strong>Family Pattern</strong>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.ToolingOrderNumber, new { @class = "control-label col-md-4" })
+                                                <div class="col-md-5">
+                                                    @Html.TextBoxFor(m => m.ToolingOrderNumber, new { @id = "toolingOrderNumber", @class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                            <br /><br />
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.ToolingDescription, new { @class = "control-label col-md-4" })
+                                                <div class="col-md-8">
+                                                    @Html.TextAreaFor(m => m.ToolingDescription, new { @id = "toolingDescription", @rows = "5", @cols = "65", @style = "font-size: 13px;overflow-y: scroll;" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Notes, new { @class = "control-label col-md-4" })
+                                                <div class="col-md-8">
+                                                    @Html.TextAreaFor(m => m.Notes, new { @id = "notes", @rows = "5", @cols = "65", @style = "font-size: 13px;overflow-y: scroll;" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-md-9 centered">
+        <div class="panel panel-default">
+            <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                <h3 class="panel-title accordion-toggle">
+                    Drawings
+                    <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                </h3>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.RevisionNumber, new { @class = "control-label col-md-4" })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(model => model.RevisionNumber, new { @id = "revisionNumber", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding:10px;">
+                        <div class="table-bordered" style="overflow-x:scroll; white-space:nowrap;">
+                            <div id="drawingGallery" class="col-md-12">
+                                @if (Model.Drawings != null)
+                                {
+                                    foreach (var drawing in Model.Drawings)
+                                    {
+                                        <div id="@drawing.DrawingId" style="display:inline-block; margin:0px 10px;">
+                                            <a href="@Url.Action("GetDrawing", "Part", new { drawingId = @drawing.DrawingId, isProject = @drawing.IsProject })" target="_blank"><img src="@Url.Content("~/Content/images/southland_pdf_48.png")" class="img-responsive" alt="pdf" /></a>
+                                            <div style="display: inline-block;">
+                                                <span class="pull-left">@drawing.RevisionNumber</span>&nbsp;&nbsp;
+                                                <span style="padding-top: 4px;" aria-hidden="true" class="glyphicon glyphicon-trash pull-right" onclick="deleteDrawing('@drawing.DrawingId');"></span>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form id="attachment" method="post" enctype="multipart/form-data" encoding="multipart/form-data">
+                                <div class="input-group">
+                                    @Html.HiddenFor(m => m.PartId)
+                                    <input class="form-control" type="file" name="drawing" id="drawing" />
+                                    <span class="input-group-btn">
+                                        <button id="fileSubmitBtn" type="button" class="btn btn-sm btn-danger">Add</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var isActive = @Html.Raw(Json.Encode(Model.IsActive));
+    var isRaw = @Html.Raw(Json.Encode(Model.IsRaw));
+    var isMachined = @Html.Raw(Json.Encode(Model.IsMachined));
+    var isFamilyPattern = @Html.Raw(Json.Encode(Model.IsFamilyPattern));
+    var isProjectPart = @Html.Raw(Json.Encode(Model.IsProjectPart));
+    var drawings = @Html.Raw(Json.Encode(Model.Drawings));
+    var foundryOrderId = @Html.Raw(Json.Encode(Model.FoundryOrderId));
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-part-detail.js")
+}
+
+
+

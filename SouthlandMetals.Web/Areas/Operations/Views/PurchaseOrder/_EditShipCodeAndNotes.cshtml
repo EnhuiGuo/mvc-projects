@@ -1,0 +1,52 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.ShipCodeViewModel
+
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="editShipCodeNotesModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-sm">
+        <div class="modal-content">
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Ship Code</h4>
+            </div>
+            <div class="alert alert-success alert-dismissable alert-modal successAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <div class="alert alert-danger alert-dismissable alert-modal errorAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong>Warning!</strong>&nbsp;Please fill in all required fields!
+            </div>
+            <br />
+            <div id="shipCodeForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input id="shipCodeCustomerOrderPartId" class="hidden" />
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ShipCode, new { @class = "col-md-6 control-label" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.ShipCode, new { @id = "shipCodeNumber", @class = "form-control", @type = "text", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="text-align:left">
+                        <button id="newShipCodeNumber" class="btn btn-danger">New Number</button>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ShipCodeNotes, new { @class = "col-md-6 control-label" })
+                            <div class="col-md-6">
+                                @Html.TextAreaFor(m => m.ShipCodeNotes, new { @id = "shipCodeNotes", @rows = "5", @cols = "65", @style = "font-size: 13px;overflow-y: scroll;", @autofocus = "", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="modal-footer">
+                    <button id="saveShipCodeBtn" class="btn btn-sm modal-save-update-btn" type="submit" title="Save Ship Code" data-bind="click: updateShipCodeAndNotes">Save</button>
+                    <button id="cancelSaveShipCodeBtn" class="btn btn-sm btn-default" type="button" data-dismiss="modal" title="Cancel Saving Ship Code">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

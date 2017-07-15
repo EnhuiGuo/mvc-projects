@@ -1,0 +1,160 @@
+﻿@model SouthlandMetals.Web.Models.DashboardViewModel
+
+<h2>Admin Dashboard</h2>
+
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+            <div class="col-md-2">
+                <a href="@Url.Action("Create", "Rfq", new { area = "Operations" })" class="thumbnail admin">
+                    <h4>Create RFQ</h4>
+                </a>
+            </div>
+            <div class="col-md-2">
+                <a href="@Url.Action("Standard", "Quote", new { area = "Operations" })" class="thumbnail admin">
+                    <h4>Create Quote</h4>
+                </a>
+            </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-6" style="min-height: 400px;">
+            <div class="panel" style="min-height: 400px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix" style="background-color: white">
+                        <h3 class="panel-title" style="color: #333333;">
+                            Open Packing Lists
+                        </h3>
+                    </div>
+                    <div class="panel-body" style="padding-top: 25px;min-height: 400px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="openPackingLists" class="table table-bordered table-hover table-responsive responsive no-wrap"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" style="min-height: 400px;">
+            <div class="panel" style="min-height: 400px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix" style="background-color: white">
+                        <h3 class="panel-title" style="color: #333333;">
+                            On Hold Projects
+                        </h3>
+                    </div>
+                    <div class="panel-body" style="padding-top: 25px;min-height: 400px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="onHoldProjects" class="table table-bordered dt-responsive nowrap"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-6" style="min-height: 400px;">
+            <div class="panel" style="min-height: 400px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix" style="background-color: white">
+                        <h3 class="panel-title" style="color: #333333;">
+                            On Hold RFQs
+                        </h3>
+                    </div>
+                    <div class="panel-body" style="padding-top: 25px;min-height: 400px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="onHoldRfqs" class="table table-bordered dt-responsive nowrap"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" style="min-height: 400px;">
+            <div class="panel" style="min-height: 400px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix" style="background-color: white">
+                        <h3 class="panel-title" style="color: #333333;">
+                            On Hold Quotes
+                        </h3>
+                    </div>
+                    <div class="panel-body" style="padding-top: 25px;min-height: 400px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="onHoldQuotes" class="table table-bordered dt-responsive nowrap"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-6" style="min-height: 400px;">
+            <div class="panel" style="min-height: 400px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix" style="background-color: white">
+                        <h3 class="panel-title" style="color: #333333;">
+                            On Hold Customer Orders
+                        </h3>
+                    </div>
+                    <div class="panel-body" style="padding-top: 25px;min-height: 400px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="onHoldCustomerOrders" class="table table-bordered dt-responsive nowrap"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" style="min-height: 400px;">
+            <div class="panel" style="min-height: 400px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix" style="background-color: white">
+                        <h3 class="panel-title" style="color: #333333;">
+                            On Hold Foundry Orders
+                        </h3>
+                    </div>
+                    <div class="panel-body" style="padding-top: 25px;min-height: 400px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="onHoldFoundryOrders" class="table table-bordered dt-responsive nowrap"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="viewHoldNotesDiv">
+</div>
+
+<script>
+    var openPackingLists = @Html.Raw(Json.Encode(Model.OpenPackingLists));
+    var onHoldProjects =  @Html.Raw(Json.Encode(Model.OnHoldProjects));
+    var onHoldRfqs =  @Html.Raw(Json.Encode(Model.OnHoldRfqs));
+    var onHoldQuotes = @Html.Raw(Json.Encode(Model.OnHoldQuotes));
+    var onHoldCustomerOrders = @Html.Raw(Json.Encode(Model.OnHoldCustomerOrders));
+    var onHoldFoundryOrders = @Html.Raw(Json.Encode(Model.OnHoldFoundryOrders));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-admin-dashboard.js")
+}
+

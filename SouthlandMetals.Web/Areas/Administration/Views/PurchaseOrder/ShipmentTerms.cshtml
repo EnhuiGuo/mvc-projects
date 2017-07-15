@@ -1,0 +1,58 @@
+﻿@model SouthlandMetals.Web.Areas.Administration.Models.CountryViewModel
+
+<br />
+
+<form id="shipmentForm">
+    <div class="row">
+        <div class="col-md-9 centered">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="clearfix">                    
+                        <button id="cancelEditShipmentTermsBtn" class="btn btn-sm btn-submit pull-right" title="Cancel Terms Edit" value="Cancel Terms Edit">Cancel</button>
+                        <button id="updateShipmentTermsBtn" class="btn btn-sm btn-cancel pull-right" title="Update Shipment Terms" value="Update">Update</button>
+                        <h3 class="panel-title">
+                            Shipment Terms
+                        </h3>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.CountryId, new { @class = "control-label col-md-2" })
+                                    <div class="col-md-6">
+                                        @Html.DropDownListFor(m => m.CountryId, Model.SelectableCountries, new { @id = "countryId", @class = "form-control", @required = "required" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="checkbox checkbox-success">
+                                    <input type="checkbox" id="printTerms">
+                                    <label for="printTerms" class="control-label col-md-5">
+                                        <strong>Print Shipment Terms on Order</strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.ShipmentTerms)
+                                    @Html.TextAreaFor(m => m.ShipmentTerms, new { @id = "shipmentTerms", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;", cols = "50", rows = "10", @required = "required" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-order-shipmentTerms.js")
+}

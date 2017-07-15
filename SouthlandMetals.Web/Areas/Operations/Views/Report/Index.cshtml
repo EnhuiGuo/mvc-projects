@@ -1,0 +1,180 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.ReportParameterModel
+
+<br />
+
+<h3>Reports</h3>
+
+<div class="row">
+    <div class="col-md-8 centered">
+        <div class="panel panel-default">
+            <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                <h3 class="panel-title accordion-toggle">
+                    Expenses
+                    <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="accountCostsSummaryReport">
+                            <span class="glyphicon glyphicon-file" style="font-size: 22px;color: tan;" title="Account Costs Summary"></span>
+                            <span style="font-size: 14px;color:cadetblue;" title="Account Costs Summary"> Account Costs Summary</span>
+                            <p style="margin: 0px 0px 10px 25px;">
+                                Report shows Expe
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-md-8 centered">
+        <div class="panel panel-default">
+            <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                <h3 class="panel-title accordion-toggle">
+                    Inventory
+                    <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                </h3>
+            </div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-md-8 centered">
+        <div class="panel panel-default">
+            <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                <h3 class="panel-title accordion-toggle">
+                    Invoicing
+                    <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="invoiceRegisterReport">
+                            <span class="glyphicon glyphicon-file" style="font-size: 22px;color: tan;" title="Invoice Register"></span>
+                            <span style="font-size: 14px;color:cadetblue;" title="Invoice Register">Invoice Register</span>
+                            <p style="margin: 0px 0px 10px 25px;">
+                                Report shows each customer (with license) and
+                                the last reported user and mailbox count.
+                                With contact, phone and email.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="foundryInvoicesReport">
+                            <span class="glyphicon glyphicon-file" style="font-size: 22px;color: tan;" title="Foundry Invoices"></span>
+                            <span style="font-size: 14px;color:cadetblue;" title="Foundry Invoices">Foundry Invoices</span>
+                            <p style="margin: 0px 0px 10px 25px;">
+                                Report shows each customer (with license) and
+                                the last reported user and mailbox count.
+                                With contact, phone and email.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-md-8 centered">
+        <div class="panel panel-default">
+            <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                <h3 class="panel-title accordion-toggle">
+                    Sales
+                    <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="domesticSalesReport">
+                            <span class="glyphicon glyphicon-file" style="font-size: 22px;color: tan;" title="Domestic Sales"></span>
+                            <span style="font-size: 14px;color:cadetblue;" title="Domestic Sales">Domestic Sales</span>
+                            <p style="margin: 0px 0px 10px 25px;">
+                                Report shows each customer (with license) and
+                                the last reported user and mailbox count.
+                                With contact, phone and email.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="internationalSalesReport">
+                            <span class="glyphicon glyphicon-file" style="font-size: 22px;color: tan;" title="International Sales"></span>
+                            <span style="font-size: 14px;color:cadetblue;" title="International Sales">International Sales</span>
+                            <p style="margin: 0px 0px 10px 25px;">
+                                Report shows each customer (with license) and
+                                the last reported user and mailbox count.
+                                With contact, phone and email.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="salespersonCommissionReport">
+                            <span class="glyphicon glyphicon-file" style="font-size: 22px;color: tan;" title="Salesperson Commission"></span>
+                            <span style="font-size: 14px;color:cadetblue;" title="Salesperson Commission">Salesperson Commission</span>
+                            <p style="margin: 0px 0px 10px 25px;">
+                                Report shows each customer (with license) and
+                                the last reported user and mailbox count.
+                                With contact, phone and email.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="accountExpenseSummaryParameter">
+    @{Html.RenderPartial("_AccountExpenseSummaryReport");}
+</div>
+
+<div id="domesticSalesParameter">
+    @{Html.RenderPartial("_DomesticSalesReport");}
+</div>
+
+<div id="internationalSalesParameter">
+    @{Html.RenderPartial("_InternationalSalesReport");}
+</div>
+
+<div id="salespersonCommissionParameter">
+    @{Html.RenderPartial("_SalespersonCommissionReport");}
+</div>
+
+<div id="invoiceRegisterParameter">
+    @{Html.RenderPartial("_InvoiceRegisterReport");}
+</div>
+
+<div id="foundryInvoicesReportDiv">
+    @{Html.RenderPartial("_FoundryInvoicesReport");}
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-operations-reports.js")
+}
+

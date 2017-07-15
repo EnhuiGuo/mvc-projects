@@ -1,0 +1,45 @@
+﻿@model SouthlandMetals.Web.Areas.Administration.Models.HtsNumberViewModel
+
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="addHtsNumberModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-sm">
+        <div class="modal-content">
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Hts Number</h4>
+            </div>
+            <div class="alert alert-success alert-dismissable alert-modal successAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <div class="alert alert-danger alert-dismissable alert-modal errorAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <br />
+            <form id="addHtsNumberForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group class="col-md-12">
+                            @Html.LabelFor(m => m.HtsNumberDescription, new { @class = "col-md-4 control-label" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.HtsNumberDescription, new { @id = "htsNumberDescription", @class = "form-control", @required = "required", @autofocus="" })
+                            </div>
+                        </div>
+                        <div class="form-group class="col-md-12">
+                            @Html.LabelFor(m => m.HtsNumberDutyRate, new { @class = "col-md-4 control-label" })
+                            <div class="col-md-6 input-group" style="padding:0 15px;max-width:310px;">
+                                @Html.TextBoxFor(m => m.HtsNumberDutyRate, new { @id = "htsNumberDutyRate", @class = "form-control", @required = "required", @type = "number", step = "0.001" })
+                                <span class="input-group-addon text-noticed">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.IsActive, new { @id = "isActive", @Value = true })
+                <br />
+                <div class="modal-footer">
+                    <button id="saveHtsNumberBtn" class="btn btn-sm modal-save-update-btn" type="submit" title="Save Hts Number">Save</button>
+                    <button id="cancelAddHtsNumberBtn" class="btn btn-sm btn-default" type="button" data-dismiss="modal" title="Cancel Adding Hts Number">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

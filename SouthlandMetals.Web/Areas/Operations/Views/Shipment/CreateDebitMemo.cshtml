@@ -1,0 +1,151 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.DebitMemoViewModel
+
+<div class="row" style="padding: 0;">
+    <nav id="partsNav" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right" style="padding-top: 6px;">
+                    <li><button id="saveMemoBtn" class="btn btn-sm btn-submit pull-right" type="submit" title="Save Debit Memo" value="Save">Save</button></li>
+                    <li><button id="cancelMemoBtn" class="btn btn-sm btn-cancel pull-right" title="Cancel Debit Memo" value="Cancel Debit Memo">Cancel</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="panel panel-default" style="margin-bottom:5px;max-width:2000px;margin:auto">
+    <div class="panel-heading" style="background-color: white">
+        <div class="clearfix">
+            <h3 class="panel-title text-noticed">
+                Number: @Model.DebitMemoNumber
+            </h3>
+        </div>
+    </div>
+    <div class="panel-body">
+        <form id="createDebitMemoForm">
+            <fieldset>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DebitMemoDateStr, new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(m => m.DebitMemoDateStr, new { @id = "debitMemoDate", @class = "form-control datepicker", @type = "text", @required = "required" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.FoundryId, new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.DropDownListFor(x => x.FoundryId, Model.SelectableFoundries, new { @id = "foundryId", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.FoundryInvoiceId, new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.DropDownListFor(x => x.FoundryInvoiceId, Model.SelectableFoundryInvoices, new { @id = "foundryInvoiceId", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.RmaNumber, new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.RmaNumber, new { @id = "rmaNumber", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.TrackingNumber, new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.TrackingNumber, new { @id = "trackingNumber", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.CustomerId, new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.DropDownListFor(x => x.CustomerId, Model.SelectableCustomers, new { @id = "customerId", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.SalespersonId, new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.DropDownListFor(x => x.SalespersonId, Model.SelectableSalespersons, new { @id = "salespersonId", @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.DebitMemoNotes)
+                                @Html.TextAreaFor(m => m.DebitMemoNotes, new { @id = "notes", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;", cols = "35", rows = "8" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading clearfix" style="background-color: white" data-toggle="collapse" href="#partCollapse">
+                                <h5>
+                                    Items
+                                    <i class="glyphicon glyphicon-menu-down pull-right panel-icon"></i>
+                                </h5>
+                            </div>
+                            <div id="partCollapse" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div id="addItem" class="pull-right">
+                                                <span id="addItemBtn" class="glyphicon glyphicon-plus text-noticed" style="font-size: 16px;" title="Add Item"></span>
+                                                <span style="font-size: 16px;" title="Add Item"> Add Item</span>
+                                            </div>
+                                            <table id="debitMemoItems" class="table table-bordered table-hover table-responsive responsive compact nowrap"></table>
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <p class="pull-right" style="font-size: 18px;"><strong>Total Cost: <span id="debitAmount" class="text-info"></span></strong></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<div id="addDebitMemoItemDiv">
+    @{Html.RenderPartial("_AddDebitMemoItem");}
+</div>
+<div id="editDebitMemoItemDiv">
+    @{Html.RenderPartial("_EditDebitMemoItem");}
+</div>
+
+<script>
+    var debitMemoNumber = @Html.Raw(Json.Encode(Model.DebitMemoNumber));
+    var foundryId = @Html.Raw(Json.Encode(Model.FoundryId));
+    var foundryInvoiceId = @Html.Raw(Json.Encode(Model.FoundryInvoiceId));
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-debitMemo-create.js")
+}
+
+
+
+
+

@@ -1,0 +1,120 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.RfqViewModel
+
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="editRfqPartModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-lg">
+        <div class="modal-content">
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit RFQ Part</h4>
+            </div>
+            <div class="alert alert-success alert-dismissable alert-modal partSuccess">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <div class="alert alert-danger alert-dismissable alert-modal partError">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <h4>Enter a new Part</h4>
+                        <br />
+                        <div class="col-md-12">
+                            <div class="col-md-8 centered">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.RfqPart.RevisionNumber, new { @class = "control-label col-md-3" })
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.RfqPart.RevisionNumber, new { @id = "editRevisionNumber", @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.Label("Select Drawing", new { @class = "control-label col-md-3" })
+                                    <div class="col-md-8">
+                                        <form id="editAttachment" method="post" enctype="multipart/form-data" encoding="multipart/form-data">
+                                            <div class="input-group">
+                                                <input class="form-control" type="file" name="drawing" id="editDrawing" />
+                                                <span class="input-group-btn">
+                                                    <button id="editFileSubmitBtn" type="button" class="btn btn-sm btn-danger">Add</button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br /><br />
+                    <form id="editRfqPartForm">
+                        <div class="row">
+                            @Html.HiddenFor(m => m.RfqPart.CustomerId, new { @id = "editPartCustomerId", @class = "hidden" })
+                            @Html.HiddenFor(m => m.RfqPart.FoundryId, new { @id = "editPartFoundryId", @class = "hidden" })
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.RfqPart.PartNumber, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.RfqPart.PartNumber, new { @id = "editPartNumber", @class = "form-control", @required = "required", @readonly = "readonly" })
+                                            @Html.TextBoxFor(m => m.RfqPart.ProjectPartId, new { @id = "editProjectPartId", @class = "hidden" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.RfqPart.PartDescription, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.RfqPart.PartDescription, new { @id = "editPartDescription", @class = "form-control", @required = "required" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.RfqPart.AnnualUsage, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.RfqPart.AnnualUsage, new { @id = "editAnnualUsage", @class = "form-control", @required = "required", type = "number", min = 0, step = "any" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.RfqPart.Weight, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.RfqPart.Weight, new { @id = "editWeight", @class = "form-control", type = "number", min = 0, step = "any" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.MaterialId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.MaterialId, Model.SelectableMaterial, new { @id = "editMaterialId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-4 centered">
+                                    <div class="radio radio-danger radio-inline">
+                                        <input type="radio" id="editIsRawBtn" value="optionRaw" name="radioInline" required>
+                                        <label for="editIsRawBtn" class="control-label col-md-5">
+                                            Raw
+                                        </label>
+                                    </div>
+                                    <div class="radio radio-danger radio-inline">
+                                        <input type="radio" id="editIsMachinedBtn" value="optionMachine" name="radioInline" required>
+                                        <label for="editIsMachinedBtn" class="control-label col-md-5">
+                                            Machine
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br />
+            <div class="modal-footer">
+                <button id="updateRfqPartBtn" class="btn btn-sm modal-save-update-btn" title="Update RFQ Part">Update</button>
+                <button id="cancelEditRfqPartBtn" class="btn btn-sm btn-default" type="button" data-dismiss="modal" title="Cancel Editing RFQ Part">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+

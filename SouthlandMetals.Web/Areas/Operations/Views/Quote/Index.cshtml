@@ -1,0 +1,62 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.QuoteViewModel
+
+<br />
+
+<div class="row">
+    <div class="col-md-11 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">
+                        Quotes
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="padding:5px;">
+                        <div class="pull-left">
+                            <div class="radio radio-danger radio-inline">
+                                <input type="radio" id="all" name="Status" value="All">
+                                <label for="all" class="control-label">
+                                    All
+                                </label>
+                            </div>
+                            <div class="radio radio-danger radio-inline">
+                                <input type="radio" id="open" name="Status" value="Open" checked>
+                                <label for="open" class="control-label">
+                                    Open
+                                </label>
+                            </div>
+                            <div class="radio radio-danger radio-inline">
+                                <input type="radio" id="hold" name="Status" value="On Hold">
+                                <label for="hold" class="control-label">
+                                   On Hold
+                                </label>
+                            </div>
+                            <div class="radio radio-danger radio-inline">
+                                <input type="radio" id="canceled" name="Status" value="Canceled">
+                                <label for="canceled" class="control-label">
+                                    Canceled
+                                </label>
+                            </div>
+                        </div>
+                        <div id="addQuote" class="pull-right">
+                            <span id="addQuoteBtn" class="glyphicon glyphicon-plus" title="Add Quote"></span>
+                            <span style="font-size: 14px;" title="Add Quote"> Add Quote</span>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12" style="padding:10px; margin: 10px 0px;">
+                            <table id="quotes" class="table table-bordered dt-responsive" cellspacing="0" style="margin-top:5px;width:100%"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var quotes = @Html.Raw(Json.Encode(Model.Quotes));
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-quotes.js")
+}

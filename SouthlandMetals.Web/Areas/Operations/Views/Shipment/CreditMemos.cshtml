@@ -1,0 +1,125 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.CreditMemoViewModel
+
+<br />
+<div class="row">
+    <div class="col-md-11 centered">
+        <div class="panel panel-default">
+            <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                <h3 class="panel-title accordion-toggle">
+                    Search Criteria
+                    <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                </h3>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CreditMemoNumber, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.CreditMemoNumber, new { @id = "creditMemoNumber", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.PartNumber, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.PartNumber, new { @id = "partNumber", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.RmaNumber, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.RmaNumber, new { @id = "rmaNumber", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CustomerId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.CustomerId, Model.SelectableCustomers, new { @id = "customerId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.FoundryId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(m => m.FoundryId, Model.SelectableFoundries, new { @id = "foundryId", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.FromDateStr, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.FromDateStr, new { @id = "fromDate", @class = "form-control datepicker", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.ToDateStr, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.ToDateStr, new { @id = "toDate", @class = "form-control datepicker", @type = "text" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button id="searchBtn" class="btn btn-sm btn-danger" style="width: 200px;">Search</button>
+                                    <button id="resetBtn" class="btn btn-sm btn-default" style="width: 200px;">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-11 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <div class="panel-title">
+                        Credit Memos
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="creditMemos" class="table table-bordered dt-responsive nowrap"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var creditMemos = @Html.Raw(Json.Encode(Model.CreditMemos));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-shipment-creditMemos.js")
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

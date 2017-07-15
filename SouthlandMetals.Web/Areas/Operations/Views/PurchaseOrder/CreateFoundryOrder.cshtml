@@ -1,0 +1,196 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.FoundryOrderViewModel
+
+<div class="alert alert-danger partError" style="display:none">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+</div>
+<form id="foundryOrderForm">
+    <div class="row" style="padding: 0;">
+        <nav id="partsNav" class="navbar navbar-inverse" style="min-height: 40px;background-color: #AFAFAF;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav pull-right" style="padding-top: 6px;">
+                        <li><button id="saveFoundryOrderBtn" class="btn btn-sm pull-right" title="Save Foundry Order" style="background-color: #d43f3a;color: white;">Save</button></li>
+                        <li><button id="cancelFoundryOrderBtn" class="btn btn-sm pull-right" title="Cancel Foundry Order" value="Cancel Foundry Order" style="background-color: lightgray;color: #333333;">Cancel</button></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-md-11 centered">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="border-bottom: 1px solid #ddd;background-color: white">
+                    <h3 class="panel-title" style="color: #333333;">
+                        Create Foundry Order
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.OrderTypeId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            <select id="orderTypes" class="form-control" name="OrderTypeId" data-bind="options: orderTypes, value: orderTypeId, optionsText: 'Text', optionsValue: 'Value'," autofocus required></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.OrderNumber, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.OrderNumber, new { @id = "orderNumber", @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CustomerId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            <select id="customers" class="form-control" name="CustomerId" data-bind="options: customers, value: customerId, optionsText: 'Text', optionsValue: 'Value', optionsCaption: '--Select Customer--'" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.ProjectId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            <select id="projects" class="form-control" name="ProjectId" data-bind="options: projects, value: projectId, optionsText: 'Text', optionsValue: 'Value', optionsCaption: '--Select Project--'" required></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.FoundryId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.DropDownListFor(m => m.FoundryId, Model.SelectableFoundries, new { @id = "foundryId", @class = "form-control", required = "required" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.SiteId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            <select id="sites" class="form-control" name="SiteId" data-bind="options: sites, value: siteId, optionsText: 'Text', optionsValue: 'Value', optionsCaption: '--Select Site--'" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.ShipVia, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(x => x.ShipVia, new { @id = "shipVia", @class = "form-control", required = "required" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CustomerAddressId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            <select id="addresses" class="form-control" style="width:unset;max-width:unset" name="CustomerAddressId" data-bind="options: addresses, value: addressId, optionsText: 'Text', optionsValue: 'Value'" required></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.PODateStr, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.PODateStr, new { @id = "poDate", @class = "form-control datepicker", @type = "text", required = "required" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.OrderNotes)
+                                            @Html.TextAreaFor(m => m.OrderNotes, new { @id = "orderNotes", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;", cols = "35", rows = "8" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.ShipmentTerms)
+                                            @Html.TextAreaFor(m => m.ShipmentTerms, new { @id = "shipmentTerms", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;", cols = "35", rows = "8", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Customer Orders</label>
+                                            <textarea id="customerOrders" class="form-control" style="font-size:13px;overflow-y:scroll;" cols="35" rows="8" readonly></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div>
+                                        <button class="btn btn-sm btn-default pull-left" title="Select All" data-bind="click: selectAll.bind(this, orderParts)">Select All</button>
+                                        <button class="btn btn-sm btn-warning pull-left" title="DeSelect All" data-bind="click: deselectAll.bind(this, orderParts)">DeSelect All</button>
+                                        <button class="btn btn-sm btn-danger pull-left" title="Remove" data-bind="click: remove">Remove</button>
+                                    </div>
+                                    <div id="addParts" class="pull-right" style="line-height:30px">
+                                        <span id="addPartsBtn" class="glyphicon glyphicon-plus" style="font-size: 12px;color: #d43f3a;" title="Add Parts"></span>
+                                        <span style="font-size: 14px;" title="Add Parts">Add Parts</span>
+                                    </div>
+                                    <div class="pull-right" style="font-size: 18px;margin-right:20px;line-height:30px"><strong>Total Cost: <span class="text-center" data-bind="text: orderCostTotal"></span></strong></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 centered">
+                                    <div class='scrolledTable'>
+                                        <table id="orderParts" class="table table-bordered dt-responsive no-wrap">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 5%;">Avail. Qty</th>
+                                                    <th style="width: 5%;">Quantity</th>
+                                                    <th>Part</th>
+                                                    <th>Description</th>
+                                                    <th>Customer Order</th>
+                                                    <th>Unit Price</th>
+                                                    <th>Unit Cost</th>
+                                                    <th>Ext Price</th>
+                                                    <th>Ext Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody data-bind="foreach: {data: orderParts, options: multiSelectableOptions }">
+                                                <tr data-bind="attr: { id: customerOrderPartId }, click: $root.selectProcedure.bind($data, $parent.orderParts()), css:{ selected: Selected }">
+                                                    <td style="width: 5%;" data-bind="text: availableQuantity"></td>
+                                                    <td><input style="width: 75px;" class="form-control" data-bind="value: orderQuantity,  attr: { max : availableQuantity }" type="number" min="0" /></td>
+                                                    <td data-bind="text: partNumber"></td>
+                                                    <td data-bind="text: partDescription"></td>
+                                                    <td data-bind="text: poNumber"></td>
+                                                    <td>$<span data-bind="text: unitPrice"></span></td>
+                                                    <td>$<span data-bind="text: unitCost"></span></td>
+                                                    <td>$<span data-bind="text: extendedPrice"></span></td>
+                                                    <td>$<span data-bind="text: extendedCost"></span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@{ Html.RenderPartial("_AddCustomerOrderParts"); }
+
+<script type="text/javascript">
+    var customers = @Html.Raw(Json.Encode(Model.SelectableCustomers));
+    var orderTypes = @Html.Raw(Json.Encode(Model.SelectableOrderTypes));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-foundryOrder-create.js")
+}
+
+
+
+
+
+

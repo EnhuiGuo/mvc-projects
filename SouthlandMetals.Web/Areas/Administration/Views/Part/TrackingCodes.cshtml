@@ -1,0 +1,39 @@
+﻿@model SouthlandMetals.Web.Areas.Administration.Models.TrackingCodeViewModel
+
+<br />
+
+<div class="row">
+    <div class="col-md-10 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <div class="panel-title">
+                        Tracking Codes
+                        <div id="addTrackingCode" class="pull-right">
+                            <span id="addTrackingCodeBtn" class="glyphicon glyphicon-plus" title="Add Tracking Code"></span>
+                            <span style="font-size: 14px;" title="Add Tracking Code"> Add Tracking Code</span>
+                        </div>
+                    </div>  
+                </div>
+                <div class="panel-body">
+                    <table id="trackingCodes" class="table table-bordered dt-responsive nowrap"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addTrackingCodeDiv">
+        @{Html.RenderPartial("_AddTrackingCode");}
+    </div>
+    <div id="editTrackingCodeDiv">
+        @{Html.RenderPartial("_EditTrackingCode");}
+    </div>
+</div>
+
+<script type="text/javascript">
+    var trackingCodes = @Html.Raw(Json.Encode(Model.TrackingCodes));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-trackingCodes.js")
+}
+

@@ -1,0 +1,155 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.QuoteViewModel
+
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="addQuotePartModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-lg">
+        <div class="modal-content">
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Quote Part</h4>
+            </div>
+            <div class="alert alert-success alert-dismissable alert-modal partSuccess">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <div class="alert alert-danger alert-dismissable alert-modal partError">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <br />
+            <form id="addQuotePartForm">
+                <div class="row">
+                    @Html.HiddenFor(m => m.QuotePart.CustomerId, new { @id = "addPartCustomerId", @class = "hidden" })
+                    <input id="addPartFoundryId" class="hidden"/>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="row">
+                            <h4>Select from an exisiting Part</h4>
+                            <br />
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.PartId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <select id="parts" class="form-control" autofocus></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.PartNumber, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.QuotePart.PartNumber, new { @id = "partNumber", @class = "form-control", @required = "required", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.PartDescription, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.QuotePart.PartDescription, new { @id = "partDescription", @class = "form-control", @required = "required", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.RevisionNumber, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.QuotePart.RevisionNumber, new { @id = "revisionNumber", @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.Weight, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8 input-group" style="padding:0px 15px;">
+                                            @Html.TextBoxFor(m => m.QuotePart.Weight, new { @id = "weight", @class = "form-control", @required = "required", type = "number", min = 0, step = "any" })
+                                            <span class="input-group-addon">lbs</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.AnnualUsage, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.QuotePart.AnnualUsage, new { @id = "annualUsage", @class = "form-control", @required = "required", type = "number", min = 0, step = "any" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.Price, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8 input-group" style="padding:0px 15px;">
+                                            <span class="input-group-addon glyphicon glyphicon-usd" style="top:unset"></span>
+                                            @Html.TextBoxFor(m => m.QuotePart.Price, new { @id = "price", @class = "form-control", @required = "required", type = "number", min = 0, step = "any" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.PatternPrice, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8 input-group" style="padding:0px 15px;">
+                                            <span class="input-group-addon glyphicon glyphicon-usd" style="top:unset"></span>
+                                            @Html.TextBoxFor(m => m.QuotePart.PatternPrice, new { @id = "patternPrice", @class = "form-control", @required = "required", type = "number", min = 0, step = "any" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.FixturePrice, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8 input-group" style="padding:0px 15px;">
+                                            <span class="input-group-addon glyphicon glyphicon-usd" style="top:unset"></span>
+                                            @Html.TextBoxFor(m => m.QuotePart.FixturePrice, new { @id = "fixturePrice", @class = "form-control", @required = "required", type = "number", min = 0, step = "any" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.Cost, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8 input-group" style="padding:0px 15px;">
+                                            <span class="input-group-addon glyphicon glyphicon-usd" style="top:unset"></span>
+                                            @Html.TextBoxFor(m => m.QuotePart.Cost, new { @id = "cost", @class = "form-control", @required = "required", type = "number", min = 0, step = "any" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.PatternCost, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8 input-group" style="padding:0px 15px;">
+                                            <span class="input-group-addon glyphicon glyphicon-usd" style="top:unset"></span>
+                                            @Html.TextBoxFor(m => m.QuotePart.PatternCost, new { @id = "patternCost", @class = "form-control", @required = "required", type = "number", min = 0, step = "any" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.QuotePart.FixtureCost, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8 input-group" style="padding:0px 15px;">
+                                            <span class="input-group-addon glyphicon glyphicon-usd" style="top:unset"></span>
+                                            @Html.TextBoxFor(m => m.QuotePart.FixtureCost, new { @id = "fixtureCost", @class = "form-control", @required = "required", type = "number", min = 0, step = "any" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="modal-footer">
+                    <button id="saveQuotePartBtn" class="btn btn-sm modal-save-update-btn" type="submit" title="Save Quote Part">Save</button>
+                    <button id="cancelAddQuotePartBtn" class="btn btn-sm btn-default" type="button" data-dismiss="modal" title="Cancel Adding Quote Part">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

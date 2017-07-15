@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Southland Metals</title>
+    <script
+            type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js">
+    </script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    @if (!Request.Path.ToString().Equals("/Account/Login"))
+    {
+        <header id="mainHeader" class="navbar navbar-inverse navbar-fixed-top hidden-print" role="banner">
+            <span id="menu-toggle" class="glyphicon glyphicon-align-right pull-left"></span>
+            @Html.Partial("_LogoutPartial")
+            <div class="navbar-header pull-left">
+                <span class="navbar-brand">Southland Metals</span>
+            </div>
+
+        </header>
+        <div id="wrapper">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="@Url.Action("Index", "Dashboard", new { area = "" })"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;&nbsp;Dashboard</a>
+                    </li>
+                    <li>
+                        <a id="accountingLink" class="main-collapse sidebar-links" data-toggle="collapse" href="#collapseAccounting">
+                            <i class="fa fa-calculator"></i>&nbsp;&nbsp;Accounting
+                            <span class="glyphicon glyphicon-menu-right pull-right"></span>
+                        </a>
+                        <div id="collapseAccounting" class="collapse">
+                            <ul class="nav">
+                                <li><a id="accountingInvoicesLink" href="@Url.Action("FoundryInvoices", "Invoicing", new { area = "Accounting" })" class="secondary-links">Foundry Invoices</a></li>
+                                <li><a id="accountingReportsLink" href="@Url.Action("Index", "Report", new { area = "Accounting" })" style="padding-left: 15px;"><i class="glyphicon glyphicon-file" style="color: white;"></i>&nbsp;&nbsp;&nbsp;Reports</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="administration">
+                        <a id="administrationLink" class="main-collapse sidebar-links" data-toggle="collapse" href="#collapseAdministration">
+                            <i class="fa fa-shield"></i>&nbsp;&nbsp;&nbsp;Administration
+                            <span class="glyphicon glyphicon-menu-right pull-right"></span>
+                        </a>
+                        <div id="collapseAdministration" class="collapse">
+                            <ul class="nav">
+                                <li><a id="accountCodesLink" href="@Url.Action("Index", "AccountCode", new { area = "Administration" })" style="padding-left: 10px;"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Account Codes</a></li>
+                                <li><a id="customersLink" href="@Url.Action("Index", "Customer", new { area = "Administration" })" style="padding-left: 10px;"><i style="color: white;"class="glyphicon glyphicon-usd"></i>&nbsp;&nbsp;&nbsp;Customers</a></li>
+                                <li><a id="foundriesLink" href="@Url.Action("Index", "Foundry", new { area = "Administration" })" style="padding-left: 10px;"><i class="glyphicon glyphicon-globe"></i>&nbsp;&nbsp;&nbsp;Foundries</a></li>
+                                <li class="parts">
+                                    <a id="adminPartsLink" class="secondary-collapse" data-toggle="collapse" href="#collapseParts"><i class="glyphicon glyphicon-tags"></i>&nbsp;&nbsp;&nbsp;Parts<span class="glyphicon glyphicon-menu-right pull-right"></span></a>
+                                    <div id="collapseParts" class="collapse">
+                                        <ul class="nav">
+                                            <li><a id="htsNumberLink" href="@Url.Action("HtsNumbers", "Part", new { area = "Administration" })" class="secondary-links">HTSNumbers</a></li>
+                                            <li><a id="materialLink" href="@Url.Action("Material", "Part", new { area = "Administration" })" class="secondary-links">Material</a></li>
+                                            <li><a id="specificationLink" href="@Url.Action("SpecificationMaterial", "Part", new { area = "Administration" })" class="secondary-links">Specifications</a></li>
+                                            <li><a id="partStatusLink" href="@Url.Action("PartStates", "Part", new { area = "Administration" })" class="secondary-links">Part Status</a></li>
+                                            <li><a id="partTypeLink" href="@Url.Action("PartTypes", "Part", new { area = "Administration" })" class="secondary-links">Part Types</a></li>
+                                            <li><a id="paymentTermLink" href="@Url.Action("PaymentTerms", "Part", new { area = "Administration" })" class="secondary-links">Payment Terms</a></li>
+                                            <li><a id="shipmentTermLink" href="@Url.Action("ShipmentTerms", "Part", new { area = "Administration" })" class="secondary-links">Shipment Terms</a></li>
+                                            <li><a id="surchargeLink" href="@Url.Action("Surcharge", "Part", new { area = "Administration" })" class="secondary-links">Surcharges</a></li>
+                                            <li><a id="trackingCodeLink" href="@Url.Action("TrackingCodes", "Part", new { area = "Administration" })" class="secondary-links">Tracking Codes</a></li>
+                                            <li><a id="coatingTypeLink" href="@Url.Action("CoatingTypes", "Part", new { area = "Administration" })" class="secondary-links">Coating Types</a></li>
+                                            <li><a id="patternLink" href="@Url.Action("PatternMaterial", "Part", new { area = "Administration" })" class="secondary-links">Patterns</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="adminOrders">
+                                    <a id="adminOrdersLink" class="secondary-collapse" data-toggle="collapse" href="#collapseAdminOrders"><i class="glyphicon glyphicon-inbox"></i>&nbsp;&nbsp;&nbsp;Purchase Orders<span class="glyphicon glyphicon-menu-right pull-right"></span></a>
+                                    <div id="collapseAdminOrders" class="collapse">
+                                        <ul class="nav">
+                                            <li><a id="shipmentTermsLink" href="@Url.Action("ShipmentTerms", "PurchaseOrder", new { area = "Administration" })" class="secondary-links">Shipment Terms</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li><a id="salesLink" href="@Url.Action("Index", "Sales", new { area = "Administration" })" style="padding-left: 10px;"><i class="fa fa-automobile"></i>&nbsp;&nbsp;&nbsp;Sales</a></li>
+                                <li class="shipments">
+                                    <a id="adminShipmentsLink" class="secondary-collapse" data-toggle="collapse" href="#collapseAdminShipments"><i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;Shipments<span class="glyphicon glyphicon-menu-right pull-right"></span></a>
+                                    <div id="collapseAdminShipments" class="collapse">
+                                        <ul class="nav">
+                                            <li><a id="carrierLink" href="@Url.Action("Carriers", "Shipment", new { area = "Administration" })" class="secondary-links">Carriers</a></li>
+                                            <li><a id="destinationLink" href="@Url.Action("Destinations", "Shipment", new { area = "Administration" })" class="secondary-links">Destinations</a></li>
+                                            <li><a id="portLink" href="@Url.Action("Ports", "Shipment", new { area = "Administration" })" class="secondary-links">Ports</a></li>
+                                            <li><a id="vesselLink" href="@Url.Action("Vessels", "Shipment", new { area = "Administration" })" class="secondary-links">Vessels</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li><a id="sitesLink" href="@Url.Action("Index", "Site", new { area = "Administration" })" style="padding-left: 10px;"><i class="glyphicon glyphicon-road"></i>&nbsp;&nbsp;&nbsp;Sites</a></li>                            
+                                <li><a id="usersLink" href="@Url.Action("Index", "User", new { area = "Administration" })" style="padding-left: 10px;"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;&nbsp;Users</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li style="height: 25px;"></li>
+                    <li>
+                        <a id="operationsLink" style="background-color: #666666;"><i class="glyphicon glyphicon-tasks" style="padding-top: 8px;"></i>&nbsp;&nbsp;Operations</a>
+                        <ul class="nav">
+                            <li class="parts">
+                                <a id="opsPartsLink" class="secondary-collapse" data-toggle="collapse" href="#collapseOpsParts" style="padding-left: 15px;"><i class="glyphicon glyphicon-tags"></i>&nbsp;&nbsp;&nbsp;Parts<span class="glyphicon glyphicon-menu-right pull-right"></span></a>
+                                <div id="collapseOpsParts" class="collapse">
+                                    <ul class="nav">
+                                        <li><a id="detailsLink" href="@Url.Action("Index", "Part", new { area = "Operations" })" class="secondary-links">Details</a></li>
+                                        <li><a id="layoutLink" href="@Url.Action("Layout", "Part", new { area = "Operations" })" class="secondary-links">Layout</a></li>
+                                        <li><a id="toolingLink" href="@Url.Action("Tooling", "Part", new { area = "Operations" })" class="secondary-links">Tooling</a></li>
+                                        <li><a id="updateLink" href="@Url.Action("Update", "Part", new { area = "Operations" })" class="secondary-links">Update</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><a id="projectsLink" href="@Url.Action("Index", "Project", new { area = "Operations" })" style="padding-left: 15px;"><i class="glyphicon glyphicon-wrench"></i>&nbsp;&nbsp;&nbsp;Projects</a></li>
+                            <li><a id="rfqsLink" href="@Url.Action("Index", "Rfq", new { area = "Operations" })" style="padding-left: 15px;"><i class="glyphicon glyphicon-question-sign"></i>&nbsp;&nbsp;&nbsp;RFQs</a></li>
+                            <li><a id="analysisLink" href="@Url.Action("Index", "Pricing", new { area = "Operations" })" style="padding-left: 15px;"><i class="fa fa-bar-chart"></i>&nbsp;&nbsp;&nbsp;Pricing Analysis</a></li>
+                            <li><a id="quotesLink" href="@Url.Action("Index", "Quote", new { area = "Operations" })" style="padding-left: 15px;"><i class="fa fa-ticket"></i>&nbsp;&nbsp;&nbsp;Quotes</a></li>
+                            <li class="orders">
+                                <a id="ordersLink" class="secondary-collapse" data-toggle="collapse" href="#collapseOrders" style="padding-left: 15px;"><i class="glyphicon glyphicon-inbox"></i>&nbsp;&nbsp;&nbsp;Purchase Orders<span class="glyphicon glyphicon-menu-right pull-right"></span></a>
+                                <div id="collapseOrders" class="collapse">
+                                    <ul class="nav">
+                                        <li><a id="customerLink" href="@Url.Action("CustomerOrders", "PurchaseOrder", new { area = "Operations" })" class="secondary-links">Customer</a></li>
+                                        <li><a id="foundryLink" href="@Url.Action("FoundryOrders", "PurchaseOrder", new { area = "Operations" })" class="secondary-links">Foundry</a></li>
+                                        <li><a id="schedulingLink" href="@Url.Action("Scheduling", "PurchaseOrder", new { area = "Operations" })" class="secondary-links">Scheduling</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="shipments">
+                                <a id="shipmentsLink" class="secondary-collapse" data-toggle="collapse" href="#collapseShipments" style="padding-left: 15px;"><i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;Shipments<span class="glyphicon glyphicon-menu-right pull-right"></span></a>
+                                <div id="collapseShipments" class="collapse">
+                                    <ul class="nav">
+                                        <li><a id="shipmentTrackingLink" href="@Url.Action("Tracking", "Shipment", new { area = "Operations" })" class="secondary-links">Tracking</a></li>
+                                        <li><a id="progressLink" href="@Url.Action("Progress", "Shipment", new { area = "Operations" })" class="secondary-links">Progress Inquiry</a></li>
+                                        <li><a id="foundryInvoicesLink" href="@Url.Action("FoundryInvoices", "Shipment", new { area = "Operations" })" class="secondary-links">Foundry Invoices</a></li>
+                                        <li><a id="debitMemoLink" href="@Url.Action("DebitMemos", "Shipment", new { area = "Operations" })" class="secondary-links">Debit Memos</a></li>
+                                        <li><a id="creditMemoLink" href="@Url.Action("CreditMemos", "Shipment", new { area = "Operations" })" class="secondary-links">Credit Memos</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="inventory">
+                                <a id="inventoryLink" class="secondary-collapse" data-toggle="collapse" href="#collapseInventory" style="padding-left: 15px;"><i class="glyphicon glyphicon-random"></i>&nbsp;&nbsp;&nbsp;Inventory Management<span class="glyphicon glyphicon-menu-right pull-right"></span></a>
+                                <div id="collapseInventory" class="collapse">
+                                    <ul class="nav">
+                                        <li><a id="statusLink" href="@Url.Action("Status", "Inventory", new { area = "Operations" })" class="secondary-links">Status</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="warehouse">
+                                <a id="warehouseLink" class="secondary-collapse" data-toggle="collapse" href="#collapseWarehouse" style="padding-left: 15px;"><i class="fa fa-building" style="color: white;"></i>&nbsp;&nbsp;&nbsp;Warehousing<span class="glyphicon glyphicon-menu-right pull-right"></span></a>
+                                <div id="collapseWarehouse" class="collapse">
+                                    <ul class="nav">
+                                        <li><a id="inventoryLink" href="@Url.Action("Inventory", "Warehouse", new { area = "Operations" })" class="secondary-links">Inventory</a></li>
+                                    </ul>
+                                    <ul class="nav">
+                                        <li><a id="packingListLink" href="@Url.Action("PackingLists", "Warehouse", new { area = "Operations" })" class="secondary-links">Packing Lists</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><a id="operationsReportsLink" href="@Url.Action("Index", "Report", new { area = "Operations" })" style="padding-left: 15px;"><i class="glyphicon glyphicon-file" style="color: white;"></i>&nbsp;&nbsp;&nbsp;Reports</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /#sidebar-wrapper -->
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="alertDiv"></div>
+                            <div id="spinnerDiv"></div>
+                            @Html.Partial("_Notifications")
+                            @RenderBody()
+                            @Html.Partial("_SendEmail")
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /#page-content-wrapper -->
+        </div>
+    }
+    else {
+    <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="alertDiv"></div>
+                        <div id="spinnerDiv"></div>
+                        @Html.Partial("_Notifications")
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- /#page-content-wrapper -->
+    }
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/select")
+    @Scripts.Render("~/bundles/spin")
+    @Scripts.Render("~/bundles/custom")
+    @Scripts.Render("~/signalr/hubs")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

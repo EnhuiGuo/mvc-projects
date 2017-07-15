@@ -1,0 +1,51 @@
+﻿@model SouthlandMetals.Web.Areas.Administration.Models.PartStatusViewModel
+
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="editPartStatusModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-sm">
+        <div class="modal-content">
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Part Status</h4>
+            </div>
+            <div class="alert alert-success alert-dismissable alert-modal successAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <div class="alert alert-danger alert-dismissable alert-modal errorAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <br />
+            <form id="editPartStatusForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.PartStatusId, new { @id = "editPartStatusId", @class = "hidden" })
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PartStatusDescription, new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(m => m.PartStatusDescription, new { @id = "editPartStatusDescription", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6 centered">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="editIsActive">
+                                <label for="editIsActive" class="control-label">
+                                    <strong>Active</strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="modal-footer">
+                    <button id="updatePartStatusBtn" class="btn btn-sm modal-save-update-btn" type="submit" title="Update Part Status">Update</button>
+                    <button id="cancelEditPartStatusBtn" class="btn btn-sm btn-default" type="button" data-dismiss="modal" title="Cancel Editing Part Status">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

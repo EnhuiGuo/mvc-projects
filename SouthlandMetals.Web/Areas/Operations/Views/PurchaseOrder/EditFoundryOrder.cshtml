@@ -1,0 +1,331 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.FoundryOrderViewModel
+
+<div class="alert alert-danger partError" style="display:none">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+</div>
+<form id="foundryOrderForm">
+    <div class="row" style="padding: 0;">
+        <nav id="partsNav" class="navbar navbar-inverse" style="min-height: 40px;background-color: #AFAFAF;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav pull-right" style="padding-top: 6px;">
+                        <li><button id="updateFoundryOrderBtn" class="btn btn-sm pull-right" title="Update Foundry Order" style="background-color: #d43f3a;color: white;">Update</button></li>
+                        <li><button id="cancelOrderUpdateBtn" class="btn btn-sm pull-right" title="Cancel Order Update" value="Cancel Order Update" style="background-color: lightgray;color: #333333;">Cancel</button></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-md-11 centered">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="border-bottom: 1px solid #ddd;background-color: white">
+                    <div class="clearfix">
+                        <h3 class="panel-title col-md-4" style="color: #333333;">
+                            Edit Foundry Order: @Model.OrderNumber
+                        </h3>
+                        <div class="col-md-6 pull-right">
+                            <div class="pull-right">
+                                <div class="radio radio-danger radio-inline">
+                                    @Html.RadioButtonFor(x => x.Status, "Open", new { @id = "open" })
+                                    <label for="open" class="control-label">
+                                        Open
+                                    </label>
+                                </div>
+                                <div class="radio radio-danger radio-inline">
+                                    @Html.RadioButtonFor(x => x.Status, "On Hold", new { @id = "hold" })
+                                    <label for="hold" class="control-label">
+                                        On Hold
+                                    </label>
+                                </div>
+                                <div class="radio radio-danger radio-inline">
+                                    @Html.RadioButtonFor(x => x.Status, "Completed", new { @id = "completed" })
+                                    <label for="completed" class="control-label">
+                                        Completed
+                                    </label>
+                                </div>
+                                <div class="radio radio-danger radio-inline">
+                                    @Html.RadioButtonFor(x => x.Status, "Canceled", new { @id = "canceled" })
+                                    <label for="canceled" class="control-label">
+                                        Canceled
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 pull-right">
+                            <div id="viewHoldNotes" class="pull-right">
+                                <span id="viewHoldNotesBtn" class="glyphicon glyphicon-info-sign" style="font-size: 16px;color: #d43f3a;" title="View Hold Notes"></span>
+                                <span style="font-size: 16px;" title="View Hold Notes"> Hold Notes</span>
+                            </div>
+                            <div id="viewCancelNotes" class="pull-right">
+                                <span id="viewCancelNotesBtn" class="glyphicon glyphicon-info-sign" style="font-size: 16px;color: #d43f3a;" title="View Cancel Notes"></span>
+                                <span style="font-size: 16px;" title="View Cancel Notes"> Cancel Notes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.HiddenFor(m => m.FoundryOrderId, new { @id = "foundryOrderId" })
+                            <br />
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group col-md-12" style="padding:0px;margin-bottom:0px;">
+                                        @Html.LabelFor(m => m.OrderTypeDescription, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.OrderTypeDescription, new { @id = "orderTypeDescription", @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12" style="padding:0px;">
+                                        @Html.LabelFor(m => m.OrderNumber, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.OrderNumber, new { @id = "orderNumber", @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CustomerName, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.CustomerName, new { @id = "customerName", @class = "form-control", required = "required", autofocus = "autofocus" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.ProjectName, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.ProjectName, new { @id = "projectName", @class = "form-control", required = "required" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="checkbox checkbox-success" style="margin-left:15px">
+                                        <input type="checkbox" id="editIsConfirmed">
+                                        <label for="editIsConfirmed" class="control-label">
+                                            <strong>Confirmed</strong>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.FoundryName, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.FoundryName, new { @id = "foundryName", @class = "form-control", required = "required" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.SiteId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.DropDownListFor(m => m.SiteId, Model.SelectableSites, new { @id = "editSiteId", @class = "form-control", required = "required" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.ShipVia, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.ShipVia, new { @id = "shipVia", @class = "form-control", required = "required" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CustomerAddressId, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.DropDownListFor(m => m.CustomerAddressId, Model.SelectableCustomerAddresses, new { @id = "editCustomerAddressId", @class = "form-control", required = "required", @style = "width:unset;max-width:unset" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.TransitDays, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(x => x.TransitDays, new { @id = "editTransitDays", @class = "form-control", required = "required" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.Label("Order Date", new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.PODateStr, new { @id = "poDate", @class = "form-control datepicker", @type = "text", required = "required" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.DueDate, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.DueDateStr, new { @id = "editDueDate", @class = "form-control datepicker", @type = "text", required = "required" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.PortDate, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.PortDateStr, new { @id = "editPortDate", @class = "form-control datepicker", @type = "text", required = "required" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.ShipDate, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            <input id="shipDate" class="form-control" name="ShipDate" type="text" data-bind="datepicker: shipDate" required />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.EstArrivalDate, new { @class = "control-label col-md-4" })
+                                        <div class="col-md-6">
+                                            <input id="estArrivalDate" name="EstArrivalDate" class="form-control" type="text" data-bind="datepicker: estArrivalDate" data-date-format="m/dd/yyyy" required />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.OrderNotes)
+                                            @Html.TextAreaFor(m => m.OrderNotes, new { @id = "editOrderNotes", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;", cols = "35", rows = "8" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.ShipmentTerms)
+                                            @Html.TextAreaFor(m => m.ShipmentTerms, new { @id = "shipmentTerms", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;", cols = "35", rows = "8", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Customer Orders</label>
+                                            <textarea id="customerOrders" class="form-control" style="font-size:13px;overflow-y:scroll;" cols="35" rows="3" readonly></textarea>
+                                        </div>
+                                        <br />
+                                        <div class="form-group">
+                                            <label>Ship Codes</label>
+                                            <textarea id="shipCodes" class="form-control" style="font-size:13px;overflow-y:scroll;" cols="35" rows="2" readonly></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div>
+                                        <button class="btn btn-sm btn-default pull-left" title="Select All" data-bind="click: selectAll.bind(this, orderParts)">Select All</button>
+                                        <button class="btn btn-sm btn-warning pull-left" title="DeSelect All" data-bind="click: deselectAll.bind(this, orderParts)">DeSelect All</button>
+                                        <button class="btn btn-sm btn-danger pull-left" title="Remove" data-bind="click: remove">Remove</button>
+                                    </div>
+                                    <div id="addParts" class="pull-right" style="line-height:30px">
+                                        <span id="addPartsBtn" class="glyphicon glyphicon-plus" style="font-size: 12px;color: #d43f3a;" title="Add Parts"></span>
+                                        <span style="font-size: 14px;" title="Add Parts">Add Parts</span>
+                                    </div>
+                                    <div class="pull-right" style="font-size: 18px;margin-right:20px;line-height:30px"><strong>Total Cost: <span class="text-center" data-bind="text: orderCostTotal"></span></strong></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 centered">
+                                    <div class='scrolledTable'>
+                                        <table id="orderParts" class="table table-bordered dt-responsive no-wrap">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 5%;">Avail. Qty</th>
+                                                    <th style="width: 5%;">Quantity</th>
+                                                    <th>Part</th>
+                                                    <th>Description</th>
+                                                    <th style="width: 5%;">Customer Order</th>
+                                                    <th>Ship Code</th>
+                                                    <th style="width: 5%;">Est Arrival Date</th>
+                                                    <th style="width: 5%;">Ship Date</th>
+                                                    <th>Receipt Date</th>
+                                                    <th>Unit Price</th>
+                                                    <th>Unit Cost</th>
+                                                    <th>Ext Price</th>
+                                                    <th>Ext Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody data-bind="foreach: orderParts">
+                                                <tr data-bind="attr: { id: customerOrderPartId }, click: $root.selectProcedure.bind($data, $parent.orderParts()), css:{ selected: Selected }">
+                                                    <td style="width: 5%;" data-bind="text: availableQuantity"></td>
+                                                    <td><input style="width: 75px;" class="form-control" data-bind="value: orderQuantity" type="number" min="0" /></td>
+                                                    <td data-bind="text: partNumber"></td>
+                                                    <td data-bind="text: partDescription"></td>
+                                                    <td style="width: 5%;" data-bind="text: poNumber"></td>
+                                                    <td>
+                                                        <a class="red" data-bind="click: editShipCodeAndNotes, text: shipCode "></a>
+                                                    </td>
+                                                    <td style="width: 5%;"><input style="width: 100px;" class="form-control est-arrival-date" type="text" data-bind="datepicker: estArrivalDate" required /></td>
+                                                    <td style="width: 5%;"><input style="width: 100px;" class="form-control ship-date" type="text" data-bind="datepicker: shipDate" required /></td>
+                                                    <td data-bind="text: receiptDate"></td>                                                
+                                                    <td data-bind="text: unitPrice"></td>
+                                                    <td>$<span data-bind="text: unitCost"></span></td>
+                                                    <td data-bind="text: extendedPrice"></td>
+                                                    <td>$<span data-bind="text: extendedCost"></span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="addHoldNotesDiv">
+</div>
+
+<div id="addCancelNotesDiv">
+</div>
+
+<div id="viewHoldNotesDiv">
+</div>
+
+<div id="viewCancelNotesDiv">
+</div>
+
+@{ Html.RenderPartial("_AddCustomerOrderParts");}
+
+@{ Html.RenderAction("_EditShipCodeAndNotes"); }
+
+<script type="text/javascript">
+    var foundryOrderId = @Html.Raw(Json.Encode(Model.FoundryOrderId));
+    var orderTypeDescription = @Html.Raw(Json.Encode(Model.OrderTypeDescription));
+    var currentUser = @Html.Raw(Json.Encode(Model.CurrentUser));
+    var orderNumber = @Html.Raw(Json.Encode(Model.OrderNumber));
+    var status = @Html.Raw(Json.Encode(Model.Status));
+    var orderTypes = @Html.Raw(Json.Encode(Model.SelectableOrderTypes));
+    var customers = @Html.Raw(Json.Encode(Model.SelectableCustomers));
+    var foundries = @Html.Raw(Json.Encode(Model.SelectableFoundries));
+    var customerOrders = @Html.Raw(Json.Encode(Model.SelectableCustomerOrders));
+    var isConfirmed = @Html.Raw(Json.Encode(Model.IsConfirmed));
+    var orderParts = @Html.Raw(Json.Encode(Model.FoundryOrderParts));
+    var shipDate = @Html.Raw(Json.Encode(Model.ShipDateStr));
+    var estArrivalDate = @Html.Raw(Json.Encode(Model.EstArrivalDateStr));
+    var projectId = @Html.Raw(Json.Encode(Model.ProjectId));
+
+    var holdExpirationDate = @Html.Raw(Json.Encode(Model.HoldExpirationDateStr));
+    var holdNotes = @Html.Raw(Json.Encode(Model.HoldNotes));
+    var cancelNotes = @Html.Raw(Json.Encode(Model.CancelNotes));
+    var canceledDate = @Html.Raw(Json.Encode(Model.CanceledDateStr));
+
+    var customerId = @Html.Raw(Json.Encode(Model.CustomerId));
+    var shipmentTermsId = @Html.Raw(Json.Encode(Model.ShipmentTermsId));
+    var orderDate = @Html.Raw(Json.Encode(Model.OrderDate));
+    var confirmedDate = @Html.Raw(Json.Encode(Model.ConfirmedDateStr));
+    var isHold = @Html.Raw(Json.Encode(Model.IsHold));
+    var isCanceled = @Html.Raw(Json.Encode(Model.IsCanceled));
+    var isSample = @Html.Raw(Json.Encode(Model.IsSample));
+    var isTooling = @Html.Raw(Json.Encode(Model.IsTooling));
+    var isProduction = @Html.Raw(Json.Encode(Model.IsProduction));
+    var completedDate = @Html.Raw(Json.Encode(Model.CompletedDateStr));
+    var foundryId = @Html.Raw(Json.Encode(Model.FoundryId));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-foundryOrder-edit.js")
+}
+
+
+
+
+
+

@@ -1,0 +1,529 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.PriceSheetViewModel
+
+<div class="row" style="padding: 0;">
+    <nav id="partsNav" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right" style="padding-top: 6px;">
+                    <li><button class="btn btn-sm btn-submit pull-right" data-bind="click: savePriceSheet" title="Save Pricing" value="Save Pricing">Save</button></li>
+                    <li><button id="cancelSavePricingBtn" class="btn btn-sm btn-cancel pull-right" title="Cancel Save Pricing" value="Cancel Save Pricing">Cancel</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+        <h3 class="panel-title accordion-toggle">
+            Quote PriceSheet: <span data-bind="text: priceSheetNumber"></span>
+            <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+        </h3>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Project Margin: ", new { @class = "control -label col-md-4" })
+                            <div class="col-md-8 input-group" style="max-width:133px">
+                                <input class="form-control" type="number" min="0" data-bind="textInput: projectMargin" autofocus />
+                                <span class="input-group-addon text-noticed">%</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("WAF: ", new { @class = "control -label col-md-4" })
+                            <div class="col-md-8" style="padding-left:0px;max-width:150px;">
+                                <input class="form-control" type="number" min="0" data-bind="textInput: waf" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="col-md-4">Add a Bucket:</h5>
+                        <div class="col-md-8">
+                            <ul style="list-style: none;">
+                                <li style="margin:10px">
+                                    <label style="padding:0px; margin-right:10px">Type:</label>
+                                    <div class="radio radio-danger radio-inline">
+                                        <input type="radio" id="addOn" name="optradio" value="Add-On" data-bind="checked: bucketType">
+                                        <label for="addOn" class="control-label">
+                                            Add-On
+                                        </label>
+                                    </div>
+                                    <div class="radio radio-danger radio-inline">
+                                        <input type="radio" id="surcharge" name="optradio" value="Surcharge" data-bind="checked: bucketType">
+                                        <label for="surcharge" class="control-label">
+                                            Surcharge
+                                        </label>
+                                    </div>
+                                    <div class="radio radio-danger radio-inline">
+                                        <input type="radio" id="duty" name="optradio" value="Duty" data-bind="checked: bucketType">
+                                        <label for="duty" class="control-label">
+                                            Duty
+                                        </label>
+                                    </div>
+                                </li>
+                                <li style="margin:10px"><label style="padding:0px;margin-right:2px ">Name:</label><input type="text" data-bind="value: bucketName" id="bucketName" /></li>
+                                <li style="margin:10px"><label style="padding:0px;margin-right:5px">Value:</label><input type="number" min="0" data-bind="value: bucketValue" id="bucketValue" /><button class="btn btn-sm btn-danger" data-bind="click: addBucket" style="margin-left:10px">Add</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseAddOn">
+        <h3 class="panel-title accordion-toggle">
+            Add-Ons
+            <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+        </h3>
+    </div>
+    <div id="collapseAddOn" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="addOnsTable" class="table table-striped table-hover table-responsive table-bordered compact" style="width: 100%;font-size: 12px;">
+                        <thead>
+                            <tr>
+                                <th>Add-Ons</th>
+                                <th>Value</th>
+                                <th>P/#</th>
+                                <th>Margin</th>
+                                <th>Sell Value</th>
+                                <th style="width: 10%;">Delete</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td><span class="text-center">Total</span></td>
+                                <td>$<span class="text-center" data-bind="text: addOnTotalValue"></span></td>
+                                <td>$<span class="text-center" data-bind="text: addOnTotalPNumber"></span></td>
+                                <td></td>
+                                <td>$<span class="text-center" data-bind="text: addOnTotalSellValue"></span></td>
+                            </tr>
+                        </tfoot>
+                        <tbody data-bind="foreach: addOns">
+                            <tr>
+                                <td><input class="text-center" data-bind="textInput: bucketName" style="height: 30px;font-size: 12px;" /></td>
+                                <td class="input-group" style="max-width:unset">
+                                    <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                    <input type="number" min="0" class="text-center" data-bind="textInput: bucketValue" style="width: 75px;height: 30px;font-size: 12px;" />
+                                </td>
+                                <td>$<span class="text-center" data-bind="text: bucketPNumber"></span></td>
+                                <td>
+                                    <div class="input-group" style="max-width:131px;">
+                                        <input type="number" min="0" class="text-center" data-bind="textInput: bucketMargin" style="height: 30px;font-size: 12px;" />
+                                        <span class="input-group-addon text-noticed">%</span>
+                                    </div>
+                                </td>
+                                <td>$<span class="text-center" data-bind="text: bucketSell"></span></td>
+                                <td><span class="glyphicon glyphicon-trash" data-bind="click: $root.removeAddOnBucket"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSurcharges">
+        <h3 class="panel-title accordion-toggle">
+            Surcharges
+            <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+        </h3>
+    </div>
+    <div id="collapseSurcharges" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="surchargesTable" class="table table-striped table-hover table-responsive table-bordered compact" style="width: 100%;font-size: 12px;">
+                        <thead>
+                            <tr>
+                                <th>Surcharges</th>
+                                <th>Value P/#</th>
+                                <th>Margin</th>
+                                <th>Sell Value</th>
+                                <th style="width: 10%;">Delete</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td><span class="text-center">Total</span></td>
+                                <td>$<span class="text-center" data-bind="text: surchargeTotalValue"></span></td>
+                                <td></td>
+                                <td>$<span class="text-center" data-bind="text: surchargeTotalSellValue"></span></td>
+                            </tr>
+                        </tfoot>
+                        <tbody data-bind="foreach: surcharges">
+                            <tr>
+                                <td><input class="text-center" data-bind="textInput: bucketName" style="height: 30px;font-size: 12px;" /></td>
+                                <td class="input-group" style="max-width:unset">
+                                    <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                    <input type="number" min="0" class="text-center" data-bind="textInput: bucketValue" style="width: 75px;height: 30px;font-size: 12px;" />
+                                </td>
+                                <td>
+                                    <div class="input-group" style="max-width:131px;">
+                                        <input type="number" min="0" class="text-center" data-bind="textInput: bucketMargin" style="height: 30px;font-size: 12px;" />
+                                        <span class="input-group-addon text-noticed">%</span>
+                                    </div>
+                                </td>
+                                <td>$<span class="text-center" data-bind="text: bucketSell"></span></td>
+                                <td><span class="glyphicon glyphicon-trash" data-bind="click: $root.removeSurchargeBucket"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseDuty">
+        <h3 class="panel-title accordion-toggle">
+            Duties
+            <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+        </h3>
+    </div>
+    <div id="collapseDuty" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="dutyTable" class="table table-striped table-hover table-responsive table-bordered compact" style="width: 100%;font-size: 12px;">
+                        <thead>
+                            <tr>
+                                <th>Duty</th>
+                                <th>Value</th>
+                                <th>Margin</th>
+                                <th style="width: 23.5%;">Sell Value</th>
+                                <th style="width: 10%;">Delete</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td><span class="text-center">Total</span></td>
+                                <td><span class="text-center" data-bind="text: dutyTotalValueText"></span></td>
+                                <td></td>
+                                <td><span class="text-center" data-bind="text: dutyTotalSellValueText"></span></td>
+                            </tr>
+                        </tfoot>
+                        <tbody data-bind="foreach: duties">
+                            <tr>
+                                <td><input class="text-center" data-bind="textInput: bucketName" style="height: 30px;font-size: 12px;" /></td>
+                                <td>
+                                    <div class="input-group" style="max-width:131px;">
+                                        <input type="number" min="0" class="text-center" data-bind="textInput: bucketValue" style="height: 30px;font-size: 12px;" />
+                                        <span class="input-group-addon text-noticed">%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group" style="max-width:131px;">
+                                        <input type="number" min="0" class="text-center" data-bind="textInput: bucketMargin" style="height: 30px;font-size: 12px;" />
+                                        <span class="input-group-addon text-noticed">%</span>
+                                    </div>
+                                </td>
+                                <td><span class="text-center" data-bind="text: dutySellValueText"></span></td>
+                                <td><span class="glyphicon glyphicon-trash" data-bind="click: $root.removeDutyBucket"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+        <h3 class="panel-title accordion-toggle">
+            Cost Detail
+            <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+        </h3>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="costPartsTable" class="table table-striped table-hover table-responsive table-bordered compact" style="font-size: 12px;">
+                        <thead>
+                            <tr>
+                                <th>Part No.</th>
+                                <th>Weight</th>
+                                <th>Annual Usage</th>
+                                <th>Raw Cost</th>
+                                <th>Annual Raw Cost</th>
+                                <th>P/#</th>
+                                <th>Machine Cost</th>
+                                <th>FOB Cost</th>
+                                <th>Tooling Cost</th>
+                                <th>Fixture Cost</th>
+                                <th>Add On</th>
+                                <th>Surcharge</th>
+                                <th>Duty</th>
+                                <th>Cost</th>
+                                <th>Annual Cost</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>$<span class="text-center" data-bind="text: sumTotalAnnualCost"></span></td>
+                            </tr>
+                        </tfoot>
+                        <tbody data-bind="foreach: costParts">
+                            <tr>
+                                <td><span class="text-center" data-bind="text: costPartNumber"></span></td>
+                                <td>
+                                    <div class="input-group" style="max-width: 131px;">
+                                        <input type="number" min="0" class="text-center" data-bind="textInput: costPartWeight" style="width: 90px;height: 30px;font-size: 12px;" />
+                                        <span class="input-group-addon">lbs</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="number" min="0" class="text-center" data-bind="textInput: costAnnualUsage" style="width: 90px;height: 30px;font-size: 12px;" />
+                                </td>
+                                <td class="row">
+                                    <div class="input-group">
+                                        <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                        <input type="number" min="0" class="text-center" data-bind="textInput: rawCost" style="width: 75px;height: 30px;font-size: 12px;" />
+                                    </div>
+                                </td>
+                                <td>$<span class="text-center" data-bind="text: annualRawCost"></span></td>
+                                <td>$<span class="text-center" data-bind="text: costPNumber"></span></td>
+                                <td class="row">
+                                    <div class="input-group">
+                                        <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                        <input type="number" min="0" class="text-center" data-bind="textInput: machineCost" style="width: 75px;height: 30px;font-size: 12px;" />
+                                    </div>
+                                </td>
+                                <td>$<span class="text-center" data-bind="text: fobCost"></span></td>
+                                <td class="row">
+                                    <div class="input-group">
+                                        <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                        <input type="number" min="0" class="text-center" data-bind="textInput: patternCost" style="width: 75px;height: 30px;font-size: 12px;" />
+                                    </div>
+                                </td>
+                                <td class="row">
+                                    <div class="input-group">
+                                        <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                        <input type="number" min="0" class="text-center" data-bind="textInput: fixtureCost" style="width: 75px;height: 30px;font-size: 12px;" />
+                                    </div>
+                                </td>
+                                <td>$<span class="text-center" data-bind="text: costPartAddOn"></span></td>
+                                <td>$<span class="text-center" data-bind="text: costPartSurcharge"></span></td>
+                                <td>$<span class="text-center" data-bind="text: costPartDuty"></span></td>
+                                <td>$<span class="text-center" data-bind="text: cost"></span></td>
+                                <td>$<span class="text-center" data-bind="text: annualCost"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree">
+        <h3 class="panel-title accordion-toggle">
+            Price Detail
+            <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+        </h3>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="pricePartsTable" class="table table-striped table-hover table-responsive table-bordered compact" style="font-size: 12px;">
+                        <thead>
+                            <tr>
+                                <th>Part No.</th>
+                                <th>Weight</th>
+                                <th>Annual Usage</th>
+                                <th>Raw Price</th>
+                                <th>Annual Raw Price</th>
+                                <th>P/#</th>
+                                <th>Machine Price</th>
+                                <th>FOB Price</th>
+                                <th>Tooling Price</th>
+                                <th>Fixture Price</th>
+                                <th>Add On</th>
+                                <th>Surcharge</th>
+                                <th>Duty</th>
+                                <th>Price</th>
+                                <th>Annual Price</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>$<span class="text-center" data-bind="text: sumTotalAnnualPrice"></span></td>
+                            </tr>
+                        </tfoot>
+                        <tbody data-bind="foreach: priceParts">
+                            <tr>
+                                <td><span class="text-center" data-bind="text: pricePartNumber"></span></td>
+                                <td><span class="text-center" data-bind="text: pricePartWeight"></span> lbs</td>
+                                <td><span class="text-center" data-bind="text: priceAnnualUsage"></span></td>
+                                <td class="input-group">
+                                    <span class="input-group-addon glyphicon glyphicon-usd"></span>
+                                    <input type="number" min="0" class="text-center" data-bind="textInput: rawPrice" style="width: 75px;height: 30px;font-size: 12px;" />
+                                </td>
+                                <td>$<span class="text-center" data-bind="text: annualRawPrice"></span></td>
+                                <td>$<span class="text-center" data-bind="text: pricePNumber"></span></td>
+                                <td>$<span class="text-center" data-bind="text: machinePrice"></span></td>
+                                <td>$<span class="text-center" data-bind="text: fobPrice"></span></td>
+                                <td>$<span class="text-center" data-bind="text: patternPrice"></span></td>
+                                <td>$<span class="text-center" data-bind="text: fixturePrice"></span></td>
+                                <td>$<span class="text-center" data-bind="text: priceAddOn"></span></td>
+                                <td>$<span class="text-center" data-bind="text: priceSurcharge"></span></td>
+                                <td>$<span class="text-center" data-bind="text: priceDuty"></span></td>
+                                <td>$<span class="text-center" data-bind="text: price"></span></td>
+                                <td>$<span class="text-center" data-bind="text: annualPrice"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFour">
+        <h3 class="panel-title accordion-toggle">
+            Summary
+            <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+        </h3>
+    </div>
+    <div id="collapseFour" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>
+                        <span class="col-md-6">
+                            <label>Overall Profit Margin: </label><span class="text-center" data-bind="text: overAllProfitMarginText"></span>
+                        </span>
+                        <span class="col-md-3">
+                            <label>Tooling Margin: </label>$<span class="text-center" data-bind="text: toolingMargin"></span>
+                        </span>
+                        <span class="col-md-3">
+                            <label>Fixture Margin: </label>$<span class="text-center" data-bind="text: fixtureMargin"></span>
+                        </span>
+                    </h5>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <h4 class="col-md-12">Project Summary</h4>
+                        <table class="table table-striped table-hover table-responsive table-bordered compact">
+                            <tr>
+                                <th>Annual Dollars</th>
+                                <td>$<span class="text-center" data-bind="text: annualDollars"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Annual Margin</th>
+                                <td><span class="text-center" data-bind="text: annualMarginText"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Annual Weight</th>
+                                <td><span class="text-center" data-bind="text: annualWeight"></span> lbs</td>
+                            </tr>
+                            <tr>
+                                <th>Annual Container</th>
+                                <td>$<span class="text-center" data-bind="text: annualContainer"></span></td>
+                            </tr>
+                            <tr>
+                                <th>$$$/Container</th>
+                                <td>$<span class="text-center" data-bind="text: dollarsContainer"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-4">
+                        <h4 class="col-md-12">Insurance Calculations</h4>
+                        <table class="table table-striped table-hover table-responsive table-bordered compact">
+                            <tr>
+                                <th>Freight</th>
+                                <td>$<span class="text-center" data-bind="text: insuranceFreight"></span></td>
+                            </tr>
+                            <tr>
+                                <th>110%</th>
+                                <td>$<span class="text-center" data-bind="text: insurancePercentage"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Duty 0.103</th>
+                                <td>$<span class="text-center" data-bind="text: insuranceDuty"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Divide 100</th>
+                                <td>$<span class="text-center" data-bind="text: insuranceDivisor"></span></td>
+                            </tr>
+                            <tr>
+                                <th>.49 Premium</th>
+                                <td>$<span class="text-center" data-bind="text: insurancePremium"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var priceSheetNumber = @Html.Raw(Json.Encode(Model.Number));
+    var rfqId = @Html.Raw(Json.Encode(Model.RfqId));
+    var includeRaw = @Html.Raw(Json.Encode(Model.IncludeRaw));
+    var includeMachined = @Html.Raw(Json.Encode(Model.IncludeMachined));
+    var rfqParts = @Html.Raw(Json.Encode(Model.PriceSheetParts));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-priceSheet-quote.js")
+}

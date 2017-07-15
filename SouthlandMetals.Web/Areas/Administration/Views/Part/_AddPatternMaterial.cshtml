@@ -1,0 +1,39 @@
+﻿@model SouthlandMetals.Web.Areas.Administration.Models.PatternMaterialViewModel
+
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="addPatternModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-sm">
+        <div class="modal-content">
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Pattern Material</h4>
+            </div>
+            <div class="alert alert-success alert-dismissable alert-modal successAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <div class="alert alert-danger alert-dismissable alert-modal errorAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <br />
+            <form id="addPatternMaterialForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PatternDescription, new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(m => m.PatternDescription, new { @id = "patternDescription", @class = "form-control", @autofocus = "", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.IsActive, new { @id = "isActive", @Value = true })
+                <br />
+                <div class="modal-footer">
+                    <button id="savePatternBtn" class="btn btn-sm modal-save-update-btn" type="submit" title="Save Pattern Material">Save</button>
+                    <button id="cancelAddPatternBtn" class="btn btn-sm btn-default" type="button" data-dismiss="modal" title="Cancel Adding Pattern Material">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

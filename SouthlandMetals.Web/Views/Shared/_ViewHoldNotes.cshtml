@@ -1,0 +1,43 @@
+﻿@model SouthlandMetals.Web.Models.NotesViewModel
+
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="viewHoldNotesModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-sm">
+        <div class="modal-content">
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Hold Notes</h4>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-9 centered">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.HoldExpirationDateStr, new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.HoldExpirationDateStr, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-9 centered">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.HoldNotes)
+                            @Html.TextAreaFor(m => m.HoldNotes, new { @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;", cols = "50", rows = "10", @readonly = "readonly" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="modal-footer">
+                <button id="closeBtn" class="btn btn-sm btn-default" type="button" data-dismiss="modal" title="Close">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

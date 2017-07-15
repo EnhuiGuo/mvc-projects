@@ -1,0 +1,150 @@
+﻿@model SouthlandMetals.Web.Areas.Administration.Models.UserViewModel
+
+<div class="row" style="padding: 0;">
+    <nav id="partsNav" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right" style="padding-top: 6px;">
+                    <li><button id="userUpdateBtn" class="btn btn-sm btn-submit pull-right" title="Update User" value="Update">Update</button></li>
+                    <li><button id="cancelUpdateBtn" class="btn btn-sm btn-cancel pull-right" title="Cancel Update" value="Cancel Update">Cancel</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-md-10 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix" style="background-color: white">
+                    <h3 class="panel-title" style="color: #333333;">
+                        View/Edit User
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <form id="userViewForm">
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="resetPassword" class="pull-right">
+                                    <span id="resetPasswordBtn" class="glyphicon glyphicon-pencil" style="font-size: 12px;color: orange;" title="Edit Password"></span>
+                                    <span title="Reset Password"> Reset Password</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-6">
+                                        @Html.TextBoxFor(model => model.UserName, new { @id = "userName", @class = "form-control redText", @readonly = "readonly", required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-6">
+                                        @Html.TextBoxFor(model => model.FirstName, new { @id = "firstName", @class = "form-control redText", required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-6">
+                                        @Html.TextBoxFor(model => model.LastName, new { @id = "lastName", @class = "form-control redText", required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-6">
+                                        @Html.TextBoxFor(model => model.Email, new { @id = "email", @class = "form-control redText", required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Phone, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-6">
+                                        @Html.TextBoxFor(model => model.Phone, new { @id = "phone", @class = "form-control redText" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Department, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-6">
+                                        @Html.TextBoxFor(model => model.Department, new { @id = "department", @class = "form-control redText" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Position, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-6">
+                                        @Html.TextBoxFor(model => model.Position, new { @id = "position", @class = "form-control redText" })
+                                    </div>
+                                </div>
+                                <div class="form-group">      
+                                    @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-4", @style = "padding-top: 10px;" })     
+                                    <div class="col-md-4">       
+                                        <div class="radio radio-danger">
+                                            <div class="radio radio-danger radio-inline">
+                                                @Html.RadioButtonFor(model => model.IsActive, true, new { @Id = "IsActive_true" })
+                                                <label for="IsActive_true">Yes </label>
+                                            </div>
+                                            <div class="radio radio-danger radio-inline" style="margin-left:unset">
+                                                @Html.RadioButtonFor(model => model.IsActive, false, new { @Id = "IsActive_false" })
+                                                <label for="IsActive_false">No </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <button id="deleteUserBtn" class="btn btn-sm btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="control-label" style="font-size: 18px;">Authorization Roles</label>
+                                <div>
+                                    @foreach (var role in Model.Roles)
+                                    {
+                                        <label class="checkbox-inline"><input type="checkbox" name="roles" value="@role.RoleName" checked="@role.Selected" />@role.RoleName</label>
+                                    }
+                                </div >
+                            </div >
+                        </div >
+                    </form >
+                </div>
+            </div>
+        </div>
+
+        <div id="resetPasswordDiv">
+            @{Html.RenderPartial("_ResetPassword");}
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    var currentUserName = @Html.Raw(Json.Encode(Model.UserName));
+    var currentFirstName = @Html.Raw(Json.Encode(Model.FirstName));
+    var currentLastName = @Html.Raw(Json.Encode(Model.LastName));
+    var currentEmail = @Html.Raw(Json.Encode(Model.Email));
+    var currentIsActive = @Html.Raw(Json.Encode(Model.IsActive));
+    var currentUser = @Html.Raw(Json.Encode(Model.CurrentUser));
+    var currentUserId = @Html.Raw(Json.Encode(Model.UserId));
+    var roles = @Html.Raw(Json.Encode(Model.Roles));
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-user-view-edit.js")
+}
+
+
+
+
+

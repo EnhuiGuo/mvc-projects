@@ -1,0 +1,343 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.RfqViewModel
+
+<div class="row" style="padding: 0;">
+    <nav id="partsNav" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right" style="padding-top: 10px;">
+                    <li><i id="priceSheetIcon" class="glyphicon glyphicon-usd"></i><span id="priceSheetBtn" onclick="ToPriceSheet()" class="nav-icon" title="Pricing">Pricing </span></li>
+                    <li><i class="glyphicon glyphicon-envelope"></i><span data-toggle="modal" data-target="#emailModal" class="nav-icon" title="Email">Email </span></li>
+                    <li><i id="editIcon" class="glyphicon glyphicon-pencil"></i><span id="editRfqBtn" onclick="ToEditPage()" class="nav-icon" title="Edit">Edit </span></li>
+                    <li><i class="glyphicon glyphicon-print"></i><span onclick="Print()" class="nav-icon" title="Print">Print </span></li>
+                    <li><i id="deleteIcon" class="glyphicon glyphicon-trash"></i><span id="deleteRfqBtn" class="nav-icon" title="Delete">Delete </span></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-right">
+            <strong class="control-label" style="vertical-align:bottom;">Include:</strong>
+            <div class="checkbox checkbox-inline checkbox-success">
+                <input type="checkbox" id="includeRaw">
+                <label for="includeRaw" class="control-label">
+                    <strong>Raw Parts</strong>
+                </label>
+            </div>
+            <div class="checkbox checkbox-inline checkbox-success">
+                <input type="checkbox" id="includeMachined">
+                <label for="includeMachined" class="control-label">
+                    <strong>Machine Parts</strong>
+                </label>
+            </div>
+        </div>
+        <div class="pull-left">
+            @Html.LabelFor(m => m.Status, new { @class = "control-label" })
+            <div class="radio radio-danger radio-inline">
+                @Html.RadioButtonFor(x => x.Status, "Open", new { @id = "open", @disabled = "disabled" })
+                <label for="open" class="control-label">
+                    Open
+                </label>
+            </div>
+            <div class="radio radio-danger radio-inline">
+                @Html.RadioButtonFor(x => x.Status, "On Hold", new { @id = "hold", @disabled = "disabled" })
+                <label for="hold" class="control-label">
+                    On Hold
+                </label>
+            </div>
+            <div class="radio radio-danger radio-inline">
+                @Html.RadioButtonFor(x => x.Status, "Canceled", new { @id = "canceled", @disabled = "disabled" })
+                <label for="canceled" class="control-label">
+                    Canceled
+                </label>
+            </div>
+        </div>
+        <div class="pull-right" style="margin-right:20px;">
+            <div id="viewHoldNotes" class="pull-right">
+                <span id="viewHoldNotesBtn" class="glyphicon glyphicon-info-sign" title="View Hold Notes"></span>
+                <span style="font-size: 16px;" title="View Hold Notes"> Hold Notes</span>
+            </div>
+            <div id="viewCancelNotes" class="pull-right" style="margin-right:10px;">
+                <span id="viewCancelNotesBtn" class="glyphicon glyphicon-info-sign" title="View Cancel Notes"></span>
+                <span style="font-size: 16px;" title="View Cancel Notes"> Cancel Notes</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default" style="margin-bottom:5px;max-width:2000px;margin:auto">
+    <div class="panel-heading" style="background-color: white">
+        <div class="clearfix">
+            <div class="pull-right" style="margin-right:10px">@Html.LabelFor(m => m.ProductionPriceSheet, new { @class = "control-label" }) <text id="rfqProductionPriceSheet" class="text-noticed">@Model.ProductionPriceSheet</text></div>
+            <div class="pull-right" style="margin-right:10px">@Html.LabelFor(m => m.QuotePriceSheet, new { @class = "control-label" }) <text id="rfqQuotePriceSheet" class="text-noticed">@Model.QuotePriceSheet</text></div>
+            <h3 class="panel-title text-noticed">
+                @Model.RfqNumber - "Detail"
+            </h3>
+            <span id="rfqNumber" class="hidden">@Model.RfqNumber</span>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.RfqDateStr, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                <text id="rfqDate" class="form-control" readonly="readonly">@Model.RfqDateStr</text>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ProjectName, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                <text id="projectName" class="form-control" readonly="readonly">@Model.ProjectName</text>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.CustomerName, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                <text id="customerName" class="form-control" readonly="readonly">@Model.CustomerName</text>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.FoundryName, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                <text id="foundryName" class="form-control" readonly="readonly">@Model.FoundryName</text>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Attention, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                <text id="attention" class="form-control" readonly="readonly">@Model.Attention</text>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ContactName, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                <text id="contactName" class="form-control" readonly="readonly">@Model.ContactName</text>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.SalespersonName, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                <text id="salespersonName" class="form-control" readonly="readonly">@Model.SalespersonName</text>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.CountryName, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                <text id="countryName" class="form-control" readonly="readonly">@Model.CountryName</text>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ShipmentTermDescription, new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                <text id="shipmentTermDescription" class="form-control" readonly="readonly">@Model.ShipmentTermDescription</text>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PrintsSent, new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                <text id="printsSent" class="form-control" readonly="readonly">@Model.PrintsSent</text>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.SentVia, new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                <text id="sentVia" class="form-control" readonly="readonly">@Model.SentVia</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix" data-toggle="collapse" href="#partCollapse">
+                        <div style="font-size: 17px;">
+                            <strong>Parts</strong>
+                            <i class="glyphicon glyphicon-menu-down pull-right panel-icon" style="padding-top:unset"></i>
+                            <div class="pull-right" style="margin-right:20px;"><strong>Total Machine Weight: <span id="totalWeight" class="text-info"></span> lbs</strong></div>
+                        </div>
+                    </div>
+                    <div id="partCollapse" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <table id="rfqParts" class="table table-bordered table-hover table-responsive responsive compact nowrap"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6">
+                    <div class="form-group" style="padding-left: 15px;">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="isMachined" disabled>
+                            <label for="isMachined" class="control-label col-md-5">
+                                <strong>Machined</strong>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Packaging, new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            <text type="text" id="packaging" class="form-control" readonly="readonly">@Model.Packaging</text>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Details, new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            <text id="details" class="form-control" readonly="readonly">@Model.Details</text>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.NumberOfSamples, new { @class = "control-label col-md-4" })
+                        <div class="col-md-3">
+                            <text id="numberOfSamples" class="form-control" readonly="readonly">@Model.NumberOfSamples</text>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.CoatingType, new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            <text id="coatingType" class="form-control" readonly="readonly">@Model.CoatingType</text>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.SpecificationMaterialDescription, new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            <text id="specificationMaterialDescription" class="form-control" readonly="readonly">@Model.SpecificationMaterialDescription</text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-4" style="padding:0px">
+                    <div class="checkbox checkbox-success">
+                        <input type="checkbox" id="isirRequired" disabled>
+                        <label for="isirRequired" class="control-label col-md-6">
+                            <strong>ISIR Required</strong>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4" style="padding:0px">
+                    <div class="checkbox checkbox-success">
+                        <input type="checkbox" id="sampleCastingAvailable" disabled>
+                        <label for="sampleCastingAvailable" class="control-label col-md-6">
+                            <strong>Sample Casting Available</strong>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4" style="padding:0px">
+                    <div class="checkbox checkbox-success">
+                        <input type="checkbox" id="metalCertAvailable" disabled>
+                        <label for="metalCertAvailable" class="control-label col-md-6">
+                            <strong>Metal Cert Available</strong>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4" style="padding:0px">
+                    <div class="checkbox checkbox-success">
+                        <input type="checkbox" id="cmtrRequired" disabled>
+                        <label for="cmtrRequired" class="control-label col-md-6">
+                            <strong>CMTR Required</strong>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4" style="padding:0px">
+                    <div class="checkbox checkbox-success">
+                        <input type="checkbox" id="gaugingRequired" disabled>
+                        <label for="gaugingRequired" class="control-label col-md-6">
+                            <strong>Gauging Required</strong>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4" style="padding:0px">
+                    <div class="checkbox checkbox-success">
+                        <input type="checkbox" id="testBarsRequired" disabled>
+                        <label for="testBarsRequired" class="control-label col-md-6">
+                            <strong>Test Bars Required</strong>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Notes)
+                        @Html.TextAreaFor(m => m.Notes, new { @id = "notes", @class = "form-control", @style = "font-size: 13px;", cols = "35", rows = "8", @readonly = "readonly" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="viewHoldNotesDiv">
+</div>
+
+<div id="viewCancelNotesDiv">
+</div>
+
+<script>
+    var rfqId = @Html.Raw(Json.Encode(Model.RfqId));
+    var priceSheet = @Html.Raw(Json.Encode(Model.QuotePriceSheet));
+    var priceSheetId = @Html.Raw(Json.Encode(Model.QuotePriceSheetId));
+    var projectId = @Html.Raw(Json.Encode(Model.ProjectId));
+    var allParts = @Html.Raw(Json.Encode(Model.RfqParts));
+    var status = @Html.Raw(Json.Encode(Model.Status));
+    var isMachined = @Html.Raw(Json.Encode(Model.IsMachined));
+    var isirRequired = @Html.Raw(Json.Encode(Model.ISIRRequired));
+    var sampleCastingAvailable = @Html.Raw(Json.Encode(Model.SampleCastingAvailable));
+    var metalCertAvailable = @Html.Raw(Json.Encode(Model.MetalCertAvailable));
+    var cmtrRequired = @Html.Raw(Json.Encode(Model.CMTRRequired));
+    var gaugingRequired = @Html.Raw(Json.Encode(Model.GaugingRequired));
+    var testBarsRequired = @Html.Raw(Json.Encode(Model.TestBarsRequired));
+    var hasPriceSheet = @Html.Raw(Json.Encode(Model.HasPriceSheet));
+    var isHold = @Html.Raw(Json.Encode(Model.IsHold));
+    var isCanceled = @Html.Raw(Json.Encode(Model.IsCanceled));
+
+    var holdNotes = @Html.Raw(Json.Encode(Model.HoldNotes));
+    var holdExpirationDate = @Html.Raw(Json.Encode(Model.HoldExpirationDateStr));
+    var cancelNotes = @Html.Raw(Json.Encode(Model.CancelNotes));
+    var canceledDate = @Html.Raw(Json.Encode(Model.CanceledDateStr));
+
+</script>
+
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-rfq-detail.js")
+}

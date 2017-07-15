@@ -1,0 +1,38 @@
+﻿@model SouthlandMetals.Web.Areas.Administration.Models.SpecificationMaterialViewModel
+
+<br />
+
+<div class="row">
+    <div class="col-md-10 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <div class="panel-title">
+                        Material Specification 
+                        <div id="addSpecification" class="pull-right">
+                            <span id="addSpecificationBtn" class="glyphicon glyphicon-plus" title="Add Material Specification"></span>
+                            <span style="font-size: 14px;" title="Add Material Specification"> Add Specification</span>
+                        </div>
+                    </div>  
+                </div>
+                <div class="panel-body">
+                    <table id="specificationMaterial" class="table table-bordered dt-responsive nowrap"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addSpecificationDiv">
+        @{Html.RenderPartial("_AddSpecificationMaterial");}
+    </div>
+    <div id="editSpecificationDiv">
+        @{Html.RenderPartial("_EditSpecificationMaterial");}
+    </div>
+</div>
+
+<script type="text/javascript">
+    var specificationMaterial = @Html.Raw(Json.Encode(Model.SpecificationMaterials));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-specificationMaterial.js")
+}

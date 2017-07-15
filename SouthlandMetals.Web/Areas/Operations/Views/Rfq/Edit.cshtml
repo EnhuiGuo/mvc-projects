@@ -1,0 +1,357 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.RfqViewModel
+
+<form id="editRfqForm">
+    <div class="row" style="padding: 0;">
+        <nav id="partsNav" class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav pull-right" style="padding-top: 6px;">
+                        <li><button id="updateRfqBtn" type="submit" class="btn btn-sm btn-submit pull-right" title="Update RFQ" value="Update">Update</button></li>
+                        <li><button id="cancelUpdateRfqBtn" class="btn btn-sm btn-cancel pull-right" title="Cancel Update RFQ" value="Cancel Update">Cancel</button></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-left">
+                @Html.LabelFor(m => m.Status, new { @class = "control-label" })
+                <div class="radio radio-danger radio-inline">
+                    @Html.RadioButtonFor(x => x.Status, "Open", new { @id = "open" })
+                    <label for="open" class="control-label">
+                        Open
+                    </label>
+                </div>
+                <div class="radio radio-danger radio-inline">
+                    @Html.RadioButtonFor(x => x.Status, "On Hold", new { @id = "hold" })
+                    <label for="hold" class="control-label">
+                        On Hold
+                    </label>
+                </div>
+                <div class="radio radio-danger radio-inline">
+                    @Html.RadioButtonFor(x => x.Status, "Canceled", new { @id = "canceled" })
+                    <label for="canceled" class="control-label ">
+                        Canceled
+                    </label>
+                </div>
+            </div>
+            <div class="pull-right">
+                <div id="viewHoldNotes" class="pull-right">
+                    <span id="viewHoldNotesBtn" class="glyphicon glyphicon-info-sign" title="View Hold Notes"></span>
+                    <span style="font-size: 16px;" title="View Hold Notes"> Hold Notes</span>
+                </div>
+                <div id="viewCancelNotes" class="pull-right">
+                    <span id="viewCancelNotesBtn" class="glyphicon glyphicon-info-sign" title="View Cancel Notes"></span>
+                    <span style="font-size: 16px;" title="View Cancel Notes"> Cancel Notes</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default col-md-12" style="max-width:2000px;margin:auto">
+        <div class="panel-heading clearfix">
+            <h3 class="panel-title text-noticed">
+                Edit RFQ: @Model.RfqNumber
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.RfqDateStr, new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.RfqDateStr, new { @id = "rfqDate", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ProjectName, new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.ProjectName, new { @id = "projectName", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CustomerName, new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.CustomerName, new { @id = "customerName", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.FoundryName, new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.FoundryName, new { @id = "foundryName", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Attention, new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.Attention, new { @id = "attention", @class = "form-control", autofocus = "autofocus" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ContactName, new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.ContactName, new { @id = "contactName", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.SalespersonName, new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.SalespersonName, new { list = "salespersonName", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CountryName, new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.CountryName, new { @id = "countryName", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ShipmentTermId, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(x => x.ShipmentTermId, Model.SelectableShipmentTerms, new { @id = "shipmentTermId", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.PrintsSent, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.PrintsSent, new { @id = "printsSent", @class = "form-control datepicker", @type = "text", @required = "required" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.SentVia, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.SentVia, new { @id = "sentVia", @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix" data-toggle="collapse" href="#partCollapse">
+                            <div style="font-size:17px;">
+                                <strong>Parts</strong>
+                                <i class="glyphicon glyphicon-menu-down pull-right text-noticed" style="padding-top: 0px;"></i>
+                                <div class="pull-right" style="margin-right:20px;"><strong>Total Weight: <span id="totalWeight" class="text-info"></span> lbs</strong></div>
+                            </div>
+                        </div>
+                        <div id="partCollapse" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div id="addPart" class="pull-right">
+                                            <span id="addPartBtn" class="glyphicon glyphicon-plus" title="Add Part"></span>
+                                            <span style="font-size: 16px;" title="Add Part"> Add Part</span>
+                                        </div>
+                                        <table id="rfqParts" class="table table-bordered table-hover table-responsive responsive compact nowrap" cellspacing="0" style="margin-top:5px"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6">
+                        <div class="form-group" style="padding-left: 15px;">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="isMachined" disabled>
+                                <label for="isMachined" class="control-label col-md-5">
+                                    <strong>Machined</strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Packaging, new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Packaging, new { @id = "packaging", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Details, new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Details, new { @id = "details", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.NumberOfSamples, new { @class = "control-label col-md-4" })
+                            <div class="col-md-3">
+                                @Html.TextBoxFor(m => m.NumberOfSamples, new { @id = "numberOfSamples", @class = "form-control", @type = "number", min = 0 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.CoatingTypeId, new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                <select id="coatingType" class="form-control" required></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.SpecificationMaterialId, new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                <select id="specificationMaterial" class="form-control" required></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-4" style="padding:0px">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="isirRequired">
+                            <label for="isirRequired" class="control-label col-md-6">
+                                <strong>ISIR Required</strong>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="padding:0px">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="sampleCastingAvailable">
+                            <label for="sampleCastingAvailable" class="control-label col-md-6">
+                                <strong>Sample Casting Available</strong>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="padding:0px">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="metalCertAvailable">
+                            <label for="metalCertAvailable" class="control-label col-md-6">
+                                <strong>Metal Cert Available</strong>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="padding:0px">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="cmtrRequired">
+                            <label for="cmtrRequired" class="control-label col-md-6">
+                                <strong>CMTR Required</strong>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="padding:0px">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="gaugingRequired">
+                            <label for="gaugingRequired" class="control-label col-md-6">
+                                <strong>Gauging Required</strong>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="padding:0px">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="testBarsRequired">
+                            <label for="testBarsRequired" class="control-label col-md-6">
+                                <strong>Test Bars Required</strong>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Notes)
+                            @Html.TextAreaFor(m => m.Notes, new { @id = "notes", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;", cols = "35", rows = "8" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="addHoldNotesDiv">
+</div>
+
+<div id="addCancelNotesDiv">
+</div>
+
+<div id="viewHoldNotesDiv">
+</div>
+
+<div id="viewCancelNotesDiv">
+</div>
+
+<div id="addRfqPartDiv">
+    @{Html.RenderPartial("_AddRfqPart");}
+</div>
+
+<div id="editRfqPartDiv">
+    @{Html.RenderPartial("_EditRfqPart");}
+</div>
+
+<script>
+    var currentUser = @Html.Raw(Json.Encode(Model.CurrentUser));
+    var rfqId = @Html.Raw(Json.Encode(Model.RfqId));
+    var rfqNumber = @Html.Raw(Json.Encode(Model.RfqNumber));
+    var projectId = @Html.Raw(Json.Encode(Model.ProjectId));
+    var customerId = @Html.Raw(Json.Encode(Model.CustomerId));
+    var foundryId = @Html.Raw(Json.Encode(Model.FoundryId));
+    var countryId = @Html.Raw(Json.Encode(Model.CountryId));
+    var salespersonId = @Html.Raw(Json.Encode(Model.SalespersonId));
+    var isMachined = @Html.Raw(Json.Encode(Model.IsMachined));
+    var parts = @Html.Raw(Json.Encode(Model.RfqParts));
+    var status = @Html.Raw(Json.Encode(Model.Status));
+    var isirRequired = @Html.Raw(Json.Encode(Model.ISIRRequired));
+    var sampleCastingAvailable = @Html.Raw(Json.Encode(Model.SampleCastingAvailable));
+    var metalCertAvailable = @Html.Raw(Json.Encode(Model.MetalCertAvailable));
+    var cmtrRequired = @Html.Raw(Json.Encode(Model.CMTRRequired));
+    var gaugingRequired = @Html.Raw(Json.Encode(Model.GaugingRequired));
+    var testBarsRequired = @Html.Raw(Json.Encode(Model.TestBarsRequired));
+    var selectableCoatingTypes = @Html.Raw(Json.Encode(Model.SelectableCoatingTypes));
+    var selectableSpecificationMaterials = @Html.Raw(Json.Encode(Model.SelectableSpecificationMaterial));
+    var coatingTypeId = @Html.Raw(Json.Encode(Model.CoatingTypeId));
+    var specificationMaterialId = @Html.Raw(Json.Encode(Model.SpecificationMaterialId));
+
+    var holdExpirationDate = @Html.Raw(Json.Encode(Model.HoldExpirationDateStr));
+    var holdNotes = @Html.Raw(Json.Encode(Model.HoldNotes));
+    var cancelNotes = @Html.Raw(Json.Encode(Model.CancelNotes));
+    var canceledDate = @Html.Raw(Json.Encode(Model.CanceledDateStr));
+
+    var isHold = @Html.Raw(Json.Encode(Model.IsHold));
+    var isCanceled = @Html.Raw(Json.Encode(Model.IsCanceled));
+
+    var materialId = null;
+    var materialDescription = null;
+
+    if(parts != null && parts.length > 0)
+    {
+        materialId = parts[0].MaterialId;
+        materialDescription = parts[0].MaterialDescription;
+    }
+
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-rfq-edit.js")
+}
+

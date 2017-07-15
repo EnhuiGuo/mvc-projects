@@ -1,0 +1,34 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.PriceSheetListModel
+
+@{
+    ViewBag.Title = "AllPriceSheet";
+}
+
+<br />
+
+<div class="row">
+    <div class="col-md-11 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title col-md-2">
+                        Price Sheets
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="padding:10px; margin: 10px 0px;">
+                        <table id="priceSheets" class="table table-bordered dt-responsive nowrap"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var priceSheets = @Html.Raw(Json.Encode(Model.PriceSheets));
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-priceSheets.js")
+}

@@ -1,0 +1,285 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.QuoteViewModel
+
+<div class="row" style="padding: 0;">
+    <nav id="partsNav" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right" style="padding-top: 10px;">
+                    <li><i id="convertIcon" class="glyphicon glyphicon-usd"></i><span id="convertBtn" onclick="GoProductionPriceSheet()" class="nav-icon" title="Convert to Production">Production </span></li>
+                    <li><i class="glyphicon glyphicon-envelope"></i><span data-toggle="modal" data-target="#emailModal" class="nav-icon" title="Email">Email </span></li>
+                    <li><i id="editIcon" class="glyphicon glyphicon-pencil"></i><span id="editQuoteBtn" onclick="EditQuote()" class="nav-icon" title="Edit">Edit </span></li>
+                    <li><i class="glyphicon glyphicon-print"></i><span onclick="PrintQuote()" class="nav-icon" title="Print">Print </span></li>
+                    <li><i id="deleteIcon" class="glyphicon glyphicon-trash"></i><span id="deleteQuoteBtn" class="nav-icon" title="Delete">Delete </span></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            @Html.LabelFor(m => m.Status, new { @class = "control-label" })
+            <div class="radio radio-danger radio-inline">
+                @Html.RadioButtonFor(x => x.Status, "Open", new { @id = "open", @disabled = "disabled" })
+                <label for="open" class="control-label col-md-5">
+                    Open
+                </label>
+            </div>
+            <div class="radio radio-danger radio-inline">
+                @Html.RadioButtonFor(x => x.Status, "On Hold", new { @id = "hold", @disabled = "disabled" })
+                <label for="hold" class="control-label col-md-5">
+                    Hold
+                </label>
+            </div>
+            <div class="radio radio-danger radio-inline">
+                @Html.RadioButtonFor(x => x.Status, "Canceled", new { @id = "canceled", @disabled = "disabled" })
+                <label for="canceled" class="control-label col-md-5">
+                    Canceled
+                </label>
+            </div>
+        </div>
+        <div class="pull-right">
+            <div id="viewHoldNotes" class="pull-right">
+                <span id="viewHoldNotesBtn" class="glyphicon glyphicon-info-sign text-noticed" style="font-size: 16px;" title="View Hold Notes"></span>
+                <span style="font-size: 16px;" title="View Hold Notes"> Hold Notes</span>
+            </div>
+            <div id="viewCancelNotes" class="pull-right">
+                <span id="viewCancelNotesBtn" class="glyphicon glyphicon-info-sign text-noticed" style="font-size: 16px;" title="View Cancel Notes"></span>
+                <span style="font-size: 16px;" title="View Cancel Notes"> Cancel Notes</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default" style="margin-bottom:5px;max-width:2000px;margin:auto">
+    <div class="panel-heading" style="background-color: white">
+        <div class="clearfix">
+            <span class="pull-right text-noticed">@Model.QuoteDateStr</span><strong><span class="pull-right">Date: &nbsp;</span></strong>
+            <h3 class="panel-title text-noticed">
+                Quote: @Model.QuoteNumber - "Detail"
+            </h3>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-4 text-right hidden">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.QuoteDateStr, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.QuoteDateStr, new { @id = "quoteDate", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.RfqNumber, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.RfqNumber, new { @id = "rfqNumber", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Validity, new { @class = "control-label col-md-2" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.Validity, new { @id = "validity", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-md-6">
+                            <br />
+                            @Html.Label("To:", new { @class = "control-label" })
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ContactName, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(x => x.ContactName, new { @id = "contactName", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CustomerName, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.CustomerName, new { @id = "customerName", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CustomerAddress, new { @class = "control-label col-md-4" })
+                                <div class="col-md-6">
+                                    @Html.TextAreaFor(m => m.CustomerAddress, new { @id = "customerAddress", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;width:280px;", cols = "5", rows = "3", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <br />
+                            <br />
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ContactCopy, new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.TextAreaFor(m => m.ContactCopy, new { @id = "contactCopy", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;width:280px;", cols = "35", rows = "5", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading clearfix" data-toggle="collapse" href="#partCollapse">
+                                <h5>
+                                    Parts
+                                    <i class="glyphicon glyphicon-menu-down pull-right panel-icon"></i>
+                                </h5>
+                            </div>
+                            <div id="partCollapse" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <table id="quoteParts" class="table table-bordered table-hover table-responsive responsive compact nowrap"></table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ShipmentTermDescription, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.ShipmentTermDescription, new { @id = "shipmentTermDescription", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.PaymentTermDescription, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.PaymentTermDescription, new { @id = "paymentTermDescription", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.MinimumShipment, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.MinimumShipment, new { @id = "minimumShipment", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ToolingTermDescription, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.ToolingTermDescription, new { @id = "toolingTermDescription", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.SampleLeadTime, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.SampleLeadTime, new { @id = "sampleLeadTime", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ProductionLeadTime, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.ProductionLeadTime, new { @id = "productionLeadTime", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.MaterialDescription, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.MaterialDescription, new { @id = "materialDescription", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CoatingTypeDescription, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.CoatingTypeDescription, new { @id = "coatingTypeDescription", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.HtsNumberDescription, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.HtsNumberDescription, new { @id = "htsNumberDescription", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-6">
+                            <div class="form-group" style="padding-left: 15px;">
+                                <div class="checkbox checkbox-success">
+                                    <input type="checkbox" id="isMachined" readonly>
+                                    <label for="isMachined" class="control-label col-md-5">
+                                        <strong>Machined</strong>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.Machining, new { @id = "machining", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Notes)
+                                @Html.TextAreaFor(m => m.Notes, new { @id = "notes", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;", cols = "35", rows = "8", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="viewHoldNotesDiv">
+</div>
+
+<div id="viewCancelNotesDiv">
+</div>
+
+<script>
+    var quoteId = @Html.Raw(Json.Encode(Model.QuoteId));
+    var isCanceled = @Html.Raw(Json.Encode(Model.IsCanceled));
+    var projectId = @Html.Raw(Json.Encode(Model.ProjectId));
+    var isMachined = @Html.Raw(Json.Encode(Model.IsMachined));
+    var status = @Html.Raw(Json.Encode(Model.Status));
+    var allParts = @Html.Raw(Json.Encode(Model.QuoteParts));
+    var hasCustomerOrder = @Html.Raw(Json.Encode(Model.HasCustomerOrder));
+    var priceSheetId = @Html.Raw(Json.Encode(Model.PriceSheetId));
+    var isHold = @Html.Raw(Json.Encode(Model.IsHold));
+    var isCanceled = @Html.Raw(Json.Encode(Model.IsCanceled));
+    var holdNotes = @Html.Raw(Json.Encode(Model.HoldNotes));
+    var holdExpirationDate = @Html.Raw(Json.Encode(Model.HoldExpirationDateStr));
+    var cancelNotes = @Html.Raw(Json.Encode(Model.CancelNotes));
+    var canceledDate = @Html.Raw(Json.Encode(Model.CanceledDateStr));
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-quote-detail.js"),
+}
+
+
+

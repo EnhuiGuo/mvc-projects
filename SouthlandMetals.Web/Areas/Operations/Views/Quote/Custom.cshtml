@@ -1,0 +1,243 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.QuoteViewModel
+
+<form id="customQuoteForm">
+    <div class="row" style="padding: 0;">
+        <nav id="partsNav" class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav pull-right" style="padding-top: 6px;">
+                        <li><button class="btn btn-sm btn-submit pull-right" onclick="CreateQuote()" type="submit" title="Save Quote" value="Save">Save</button></li>
+                        <li><button id="cancelSaveQuoteBtn" class="btn btn-sm btn-cancel pull-right" title="Cancel Create" value="Cancel Create">Cancel</button></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="panel panel-default" style="margin-bottom:5px;max-width:2000px;margin:auto">
+        <div class="panel-heading">
+            <div class="clearfix">
+                <span class="pull-right text-noticed">@Model.Date</span><strong><span class="pull-right">Date: &nbsp;</span></strong>
+                <h3 class="panel-title text-noticed">
+                    Number: @Model.QuoteNumber
+                </h3>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.QuoteDateStr, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.QuoteDateStr, new { @id = "quoteDate", @class = "form-control datepicker", @type = "text", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.ProjectId, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(x => x.ProjectId, Model.SelectableProjects, new { @id = "projectId", @class = "form-control", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.RfqNumber, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.RfqNumber, new { @id = "rfqNumber", @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Validity, new { @class = "control-label col-md-2" })
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.Validity, new { @id = "validity", @class = "form-control", @required = "required", type="number", min = 0 })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="col-md-6">
+                                @Html.Label("To:", new { @class = "control-label" })
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.CustomerId, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(x => x.CustomerId, Model.SelectableCustomers, new { @id = "customerId", @class = "form-control", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.ContactName, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.ContactName, new { @id = "contactName", @class = "form-control", @placeholder = "Contact" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.CustomerAddress, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-6">
+                                        <select id="customerAddressId" class="form-control"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <br />
+                                <br />
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.ContactCopy, new { @class = "control-label col-md-2" })
+                                    <div class="col-md-6">
+                                        @Html.TextAreaFor(m => m.ContactCopy, new { @id = "contactCopy", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;width:280px;", cols = "35", rows = "5", @required = "required" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading clearfix" style="background-color: white" data-toggle="collapse" href="#partCollapse">
+                                    <h5>
+                                        Parts
+                                        <i class="glyphicon glyphicon-menu-down pull-right panel-icon"></i>
+                                    </h5>
+                                </div>
+                                <div id="partCollapse" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div id="addPart" class="pull-right">
+                                                    <span id="addPartBtn" class="glyphicon glyphicon-plus text-noticed" style="font-size: 16px;" title="Add Part"></span>
+                                                    <span style="font-size: 16px;" title="Add Part"> Add Part</span>
+                                                </div>
+                                                <table id="quoteParts" class="table table-bordered table-hover table-responsive responsive compact nowrap"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ShipmentTermId, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(x => x.ShipmentTermId, Model.SelectableShipmentTerms, new { @id = "shipmentTermId", @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.PaymentTermId, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(x => x.PaymentTermId, Model.SelectablePaymentTerms, new { @id = "paymentTermId", @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.MinimumShipment, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.MinimumShipment, new { @id = "minimumShipment", @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ToolingTermDescription, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.ToolingTermDescription, new { @id = "toolingTermDescription", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.SampleLeadTime, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.SampleLeadTime, new { @id = "sampleLeadTime", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ProductionLeadTime, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.ProductionLeadTime, new { @id = "productionLeadTime", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.MaterialId, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(x => x.MaterialId, Model.SelectableMaterial, new { @id = "materialId", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CoatingTypeId, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(x => x.CoatingTypeId, Model.SelectableCoatingTypes, new { @id = "coatingTypeId", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.HtsNumberId, new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(x => x.HtsNumberId, Model.SelectableHtsNumbers, new { @id = "htsNumberId", @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-6">
+                            <div class="form-group" style="padding-left: 15px;">
+                                <div class="checkbox checkbox-success">
+                                    <input type="checkbox" id="isMachined">
+                                    <label for="isMachined" class="control-label col-md-5">
+                                        <strong>Machined</strong>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.Machining, new { @id = "machining", @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Notes)
+                                @Html.TextAreaFor(m => m.Notes, new { @id = "notes", @class = "form-control", @style = "font-size: 13px;overflow-y: scroll;width:280px;", cols = "35", rows = "8" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="addQuotePartDiv">
+    @{Html.RenderPartial("_AddQuotePart");}
+</div>
+<div id="editQuotePartDiv">
+    @{Html.RenderPartial("_EditQuotePart");}
+</div>
+
+<script>
+    var quoteNumber = @Html.Raw(Json.Encode(Model.QuoteNumber));
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-quote-custom.js"),
+}
+
+
+
+

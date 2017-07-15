@@ -1,0 +1,84 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.PartViewModel
+<br />
+<div class="row">
+    <div class="col-md-9 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">
+                        Layout
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.PartNumber, new { @class = "control-label col-md-3" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.PartNumber, new { @id = "partNumber", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>Import new Layout drawing...</span>
+                                    <form id="attachment" method="post" enctype="multipart/form-data" encoding="multipart/form-data">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(m => m.PartId, new { @id = "partId", @class = "hidden" })
+                                            <input class="form-control" type="file" name="layout" id="layout"/>
+                                            <span class="input-group-btn">
+                                                <button id="fileSubmitBtn" type="button" class="btn btn-sm btn-danger">Import</button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-offset-3" style="padding-left:15px;">
+                                <button id="searchBtn" class="btn btn-sm btn-danger">Search</button>
+                                <button id="resetBtn" class="btn btn-sm btn-default">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-9 centered">
+        <div class="panel panel-default">
+            <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                <h3 class="panel-title accordion-toggle">
+                    Layout Drawings
+                    <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                </h3>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row" style="padding:10px;">
+                        <div class="table-bordered" style="overflow-x:scroll; white-space:nowrap;">
+                            <div id="layoutGallery" class="col-md-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-part-layout.js")
+}
+
+
+
+
+

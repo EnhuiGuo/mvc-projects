@@ -1,0 +1,582 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.ProjectViewModel
+
+<div class="row" style="padding: 0;">
+    <nav id="partsNav" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right" style="padding-top: 10px;">
+                    <li><i id="deleteIcon" class="glyphicon glyphicon-trash"></i><span id="deleteProjectBtn" class="nav-icon" title="Delete">Delete </span></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <span class="hidden">@Model.ProjectId</span>
+        <div class="col-md-4" style="min-height: 330px;">
+            <div class="panel fixed-panel" style="height:330px">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix">
+                        <h2 class="panel-title pull-right">
+                            Summary
+                        </h2>
+                    </div>
+                    <div class="panel-body fixed-panel">
+                        <p>Project Name: @Model.ProjectName</p>
+                        <p>Project Initiator: @Model.CreatedBy</p>
+                        <p>Status: <span id="projectStatus">@Model.Status      </span><span id="editStatusBtn" class="glyphicon glyphicon-pencil glyphicon-large"></span></p>
+                        @if (Model.IsHold)
+                        {
+                            <p><span id="onHoldNotes">View Notes:      </span><span id="viewHoldNotesBtn" class="glyphicon glyphicon-info-sign glyphicon-large"></span></p>
+                        }
+                        @if (Model.IsCanceled)
+                        {
+                            <p><span id="cancelNotes">View Notes:      </span><span id="viewCancelNotesBtn" class="glyphicon glyphicon-info-sign glyphicon-large"></span></p>
+                        }
+                        <p>Start: @Model.CreatedDate</p>
+                        <p>Finish: @Model.CompletedDate</p>
+                        <p>Duration: @Model.Duration Days</p>
+                        <p>Profit Margin: @Model.ProjectMargin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8" style="min-height: 330px;">
+            <div class="panel fixed-panel">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix">
+                        <h2 class="panel-title pull-right">
+                            Tasks
+                        </h2>
+                        <span>
+                           <span class="text-noticed">O</span> - Open, <span class="text-noticed">H</span> - On Hold, <span class="text-noticed">Cm</span> - Completed, <span class="text-noticed">Ca</span> - Canceled
+                        </span>
+                    </div>
+                    <div class="panel-body notes-scroll fixed-panel">
+                        <div class="col-md-12">
+                            <div class="col-md-2" style="height:245px;">
+                                <strong>RFQs</strong>
+                                <ul style="list-style-type:none;padding-left:10px;">
+                                    @if (Model.RFQs != null && Model.RFQs.Count > 0)
+                                    {
+                                        foreach (var rfq in Model.RFQs)
+                                        {
+                                            <li>
+                                                @Html.ActionLink( rfq.RfqNumber, "Detail", "Rfq", new { rfqId = rfq.RfqId }, null)
+                                                @switch (rfq.Status)
+                                                {
+                                                    case "Canceled":
+                                                        rfq.Status = "Ca";
+                                                        break;
+                                                    case "Complete":
+                                                        rfq.Status = "Cm";
+                                                        break;
+                                                    case "On Hold":
+                                                        rfq.Status = "H";
+                                                        break;
+                                                    default:
+                                                        rfq.Status = "O";
+                                                        break;
+                                                }
+                                                <span class="text-noticed">(@rfq.Status)</span>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                            <div class="col-md-2" style="height:245px;">
+                                <strong>Price Sheets</strong>
+                                <ul style="list-style-type:none;padding-left:10px;">
+                                    @if (Model.PriceSheets != null && Model.PriceSheets.Count > 0)
+                                    {
+                                        var quotePriceSheets = Model.PriceSheets.Where(x => x.Status == "Quote");
+                                        var productionPriceSheets = Model.PriceSheets.Where(x => x.Status == "Production");
+
+                                        <li>
+                                            <span class="text-noticed">Quote</span>
+                                            <ul style="list-style-type:none;padding-left:10px;">
+
+                                                @if (quotePriceSheets != null && quotePriceSheets.Count() > 0)
+                                                {
+                                                    foreach (var priceSheet in quotePriceSheets)
+                                                    {
+                                                        <li>
+                                                            @Html.ActionLink(priceSheet.Number, "Detail", "Pricing", new { priceSheetId = priceSheet.PriceSheetId }, null)
+                                                        </li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>---</li>
+                                                }
+                                            </ul>
+                                        </li>
+
+                                        <li>
+                                            <span class="text-noticed">Production</span>
+                                            <ul style="list-style-type:none;padding-left:10px;">
+                                                @if (quotePriceSheets != null && quotePriceSheets.Count() > 0)
+                                                {
+                                                    foreach (var priceSheet in productionPriceSheets)
+                                                    {
+                                                        <li>
+                                                            @Html.ActionLink(priceSheet.Number, "Production", "Pricing", new { priceSheetId = priceSheet.PriceSheetId }, null)
+                                                        </li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>---</li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="col-md-2" style="height:245px;">
+                                <strong>Quotes</strong>
+                                <ul style="list-style-type:none;padding-left:10px;">
+                                    @if (Model.Quotes != null && Model.Quotes.Count > 0)
+                                    {
+                                        foreach (var quote in Model.Quotes)
+                                        {
+                                            <li>
+                                                @Html.ActionLink(quote.QuoteNumber, "Detail", "Quote", new { quoteId = quote.QuoteId }, null)
+                                                @switch (quote.Status)
+                                                {
+                                                    case "Canceled":
+                                                        quote.Status = "Ca";
+                                                        break;
+                                                    case "Complete":
+                                                        quote.Status = "Cm";
+                                                        break;
+                                                    case "On Hold":
+                                                        quote.Status = "H";
+                                                        break;
+                                                    default:
+                                                        quote.Status = "O";
+                                                        break;
+                                                }
+                                                <span class="text-noticed">(@quote.Status)</span>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                            <div class="col-md-2" style="height:245px;">
+                                <strong>Customer Orders</strong>
+                                <ul style="list-style-type:none;padding-left:10px;">
+                                    @if (Model.CustomerOrders != null && Model.CustomerOrders.Count > 0)
+                                    {
+                                        var sampleCustomerOrders = Model.CustomerOrders.Where(x => x.IsSample);
+                                        var toolingCustomerOrders = Model.CustomerOrders.Where(x => x.IsTooling);
+                                        var productionCustomerOrders = Model.CustomerOrders.Where(x => x.IsProduction);
+
+                                        <li>
+                                            <span class="text-noticed">Sample</span>
+                                            <ul style="list-style-type:none;padding-left:10px;">
+
+                                                @if (sampleCustomerOrders != null && sampleCustomerOrders.Count() > 0)
+                                                {
+                                                    var status = string.Empty;
+                                                    foreach (var customerOrder in sampleCustomerOrders)
+                                                    {
+                                                        <li>
+                                                            @Html.ActionLink(customerOrder.PONumber, "CustomerOrderDetail", "PurchaseOrder", new { customerOrderId = customerOrder.CustomerOrderId }, null)
+                                                            @if (customerOrder.IsOpen)
+                                                            {
+                                                                status = "O";
+                                                            }
+                                                            else if (customerOrder.IsHold)
+                                                            {
+                                                                status = "H";
+                                                            }
+                                                            else if (customerOrder.IsCanceled)
+                                                            {
+                                                                status = "Ca";
+                                                            }
+                                                            else if (customerOrder.IsComplete)
+                                                            {
+                                                                status = "Cm";
+                                                            }
+                                                            <span class="text-noticed">(@status)</span>
+                                                        </li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>---</li>
+                                                }
+                                            </ul>
+                                        </li>
+
+                                        <li>
+                                            <span class="text-noticed">Tooling</span>
+                                            <ul style="list-style-type:none;padding-left:10px;">
+                                                @if (toolingCustomerOrders != null && toolingCustomerOrders.Count() > 0)
+                                                {
+                                                    foreach (var customerOrder in toolingCustomerOrders)
+                                                    {
+                                                        var status = string.Empty;
+                                                        <li>
+                                                            @Html.ActionLink(customerOrder.PONumber, "CustomerOrderDetail", "PurchaseOrder", new { customerOrderId = customerOrder.CustomerOrderId }, null)
+                                                            @if (customerOrder.IsOpen)
+                                                            {
+                                                                status = "O";
+                                                            }
+                                                            else if (customerOrder.IsHold)
+                                                            {
+                                                                status = "H";
+                                                            }
+                                                            else if (customerOrder.IsCanceled)
+                                                            {
+                                                                status = "Ca";
+                                                            }
+                                                            else if (customerOrder.IsComplete)
+                                                            {
+                                                                status = "Cm";
+                                                            }
+                                                            <span class="text-noticed">(@status)</span>
+                                                        </li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>---</li>
+                                                }
+                                            </ul>
+                                        </li>
+
+                                        <li>
+                                            <span class="text-noticed">Production</span>
+                                            <ul style="list-style-type:none;padding-left:10px;">
+
+                                                @if (productionCustomerOrders != null && productionCustomerOrders.Count() > 0)
+                                                {
+                                                    foreach (var customerOrder in productionCustomerOrders)
+                                                    {
+                                                        var status = string.Empty;
+                                                        <li>
+                                                            @Html.ActionLink(customerOrder.PONumber, "CustomerOrderDetail", "PurchaseOrder", new { customerOrderId = customerOrder.CustomerOrderId }, null)
+                                                            @if (customerOrder.IsOpen)
+                                                            {
+                                                                status = "O";
+                                                            }
+                                                            else if (customerOrder.IsHold)
+                                                            {
+                                                                status = "H";
+                                                            }
+                                                            else if (customerOrder.IsCanceled)
+                                                            {
+                                                                status = "Ca";
+                                                            }
+                                                            else if (customerOrder.IsComplete)
+                                                            {
+                                                                status = "Cm";
+                                                            }
+                                                            <span class="text-noticed">(@status)</span>
+                                                        </li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>---</li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="col-md-2" style="height:245px;">
+                                <strong>Foundry Orders</strong>
+                                <ul style="list-style-type:none;padding-left:10px;">
+                                    @if (Model.FoundryOrders != null && Model.FoundryOrders.Count > 0)
+                                    {
+                                        var sampleFoundryOrders = Model.FoundryOrders.Where(x => x.IsSample);
+                                        var toolingFoundryOrders = Model.FoundryOrders.Where(x => x.IsTooling);
+                                        var productionFoundryOrders = Model.FoundryOrders.Where(x => x.IsProduction);
+
+                                        <li>
+                                            <span class="text-noticed">Sample</span>
+                                            <ul style="list-style-type:none;padding-left:10px;">
+
+                                                @if (sampleFoundryOrders != null && sampleFoundryOrders.Count() > 0)
+                                                {
+                                                    foreach (var foundryOrder in sampleFoundryOrders)
+                                                    {
+                                                        var status = string.Empty;
+                                                        <li>
+                                                            @Html.ActionLink(foundryOrder.OrderNumber, "FoundryOrderDetail", "PurchaseOrder", new { foundryOrderId = foundryOrder.FoundryOrderId }, null)
+                                                            @if (foundryOrder.IsOpen)
+                                                            {
+                                                                status = "O";
+                                                            }
+                                                            else if (foundryOrder.IsHold)
+                                                            {
+                                                                status = "H";
+                                                            }
+                                                            else if (foundryOrder.IsCanceled)
+                                                            {
+                                                                status = "Ca";
+                                                            }
+                                                            else if (foundryOrder.IsComplete)
+                                                            {
+                                                                status = "Cm";
+                                                            }
+                                                            <span class="text-noticed">(@status)</span>
+                                                        </li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>---</li>
+                                                }
+                                            </ul>
+                                        </li>
+
+                                        <li>
+                                            <span class="text-noticed">Tooling</span>
+                                            <ul style="list-style-type:none;padding-left:10px;">
+
+                                                @if (toolingFoundryOrders != null && toolingFoundryOrders.Count() > 0)
+                                                {
+                                                    foreach (var foundryOrder in toolingFoundryOrders)
+                                                    {
+                                                        var status = string.Empty;
+                                                        <li>
+                                                            @Html.ActionLink(foundryOrder.OrderNumber, "FoundryOrderDetail", "PurchaseOrder", new { foundryOrderId = foundryOrder.FoundryOrderId }, null)
+                                                            @if (foundryOrder.IsOpen)
+                                                            {
+                                                                status = "O";
+                                                            }
+                                                            else if (foundryOrder.IsHold)
+                                                            {
+                                                                status = "H";
+                                                            }
+                                                            else if (foundryOrder.IsCanceled)
+                                                            {
+                                                                status = "Ca";
+                                                            }
+                                                            else if (foundryOrder.IsComplete)
+                                                            {
+                                                                status = "Cm";
+                                                            }
+                                                            <span class="text-noticed">(@status)</span>
+                                                        </li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>---</li>
+                                                }
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <span class="text-noticed">Production</span>
+                                            <ul style="list-style-type:none;padding-left:10px;">
+
+                                                @if (productionFoundryOrders != null && productionFoundryOrders.Count() > 0)
+                                                {
+                                                    foreach (var foundryOrder in productionFoundryOrders)
+                                                    {
+                                                        var status = string.Empty;
+                                                        <li>
+                                                            @Html.ActionLink(foundryOrder.OrderNumber, "FoundryOrderDetail", "PurchaseOrder", new { foundryOrderId = foundryOrder.FoundryOrderId }, null)
+                                                            @if (foundryOrder.IsOpen)
+                                                            {
+                                                                status = "O";
+                                                            }
+                                                            else if (foundryOrder.IsHold)
+                                                            {
+                                                                status = "H";
+                                                            }
+                                                            else if (foundryOrder.IsCanceled)
+                                                            {
+                                                                status = "Ca";
+                                                            }
+                                                            else if (foundryOrder.IsComplete)
+                                                            {
+                                                                status = "Cm";
+                                                            }
+                                                            <span class="text-noticed">(@status)</span>
+                                                        </li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>---</li>
+                                                }
+                                            </ul>
+                                        </li>
+                                  }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-4" style="min-height: 330px;">
+            <div class="panel fixed-panel">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix">
+                        <h2 class="panel-title pull-right">
+                            Customer Information
+                        </h2>
+                    </div>
+                    <div class="panel-body fixed-panel">
+                        <p>Name: @Model.CustomerName</p>
+                        <p>Contact: @Model.CustomerContact</p>
+                        <p>Phone: @Model.CustomerContactPhone</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8" style="min-height: 330px;">
+            <div class="panel fixed-panel">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix">
+                        <div class="panel-title">
+                            <span class="pull-right">Parts</span>
+                        </div>
+                    </div>
+                    <div class="panel-body fixed-panel">
+                        <div class="pull-left">
+                            <div class="radio radio-danger radio-inline" style="margin-right:20px">
+                                <input type="radio" id="all" name="Type" value="All" checked>
+                                <label for="all" class="control-label">
+                                    All
+                                </label>
+                            </div>
+                            <div class="radio radio-danger radio-inline" style="margin-right:20px">
+                                <input type="radio" id="new" name="Type" value="New">
+                                <label for="new" class="control-label">
+                                    New
+                                </label>
+                            </div>
+                            <div class="radio radio-danger radio-inline">
+                                <input type="radio" id="active" name="Type" value="Active">
+                                <label for="active" class="control-label">
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+                        <table id="parts" class="table table-hover table-responsive responsive compact nowrap"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="min-height: 330px;">
+                    <div class="panel fixed-panel">
+                        <div class="panel panel-default">
+                            <div class="panel-heading clearfix">
+                                <h2 class="panel-title pull-right">
+                                    Foundry Information
+                                </h2>
+                            </div>
+                            <div class="panel-body fixed-panel">
+                                <p>Name: @Model.FoundryName</p>
+                                <p>Contact: @Model.FoundryContact</p>
+                                <p>Phone: @Model.FoundryContactPhone</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8" style="min-height: 330px;">
+                    <div class="panel fixed-panel">
+                        <div class="panel panel-default">
+                            <div class="panel-heading clearfix">
+                                <div class="panel-title">
+                                    <span class="pull-right">Notes</span>
+                                    <div id="addNote" class="pull-left">
+                                        <span id="addNoteBtn" class="glyphicon glyphicon-plus" title="Add Note"></span>
+                                        <span style="font-size: 14px;" title="Add Note"> Add Note</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="notes" class="panel-body notes-scroll fixed-panel">
+                                <ul id="notesList" class="list-group">
+                                    @foreach (var item in Model.ProjectNotes)
+                                    {
+                                        <li id="@item.ProjectNoteId" class="list-group-item col-md-12">
+                                            <div class="col-md-10">
+                                                @item.Note
+                                                <br />
+                                                @item.CreatedBy @item.CreatedDate
+                                            </div>
+                                            <div class="col-md-2">
+                                                <span style="padding-top: 4px;" aria-hidden="true" class="glyphicon glyphicon-trash pull-right glyphicon-large" onclick="deleteProjectNote('@item.ProjectNoteId')"></span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="editStatusDiv">
+        @{Html.RenderPartial("_EditStatus");}
+    </div>
+
+    <div id="addNoteDiv">
+        @{Html.RenderPartial("_AddNote");}
+    </div>
+
+    <div id="viewHoldNotesDiv">
+    </div>
+
+    <div id="viewCancelNotesDiv">
+    </div>
+
+    @{Html.RenderPartial("_ViewRfqs");}
+
+    @{Html.RenderPartial("_ViewToolingOrders");}
+
+    @{Html.RenderPartial("_ViewSampleOrders");}
+
+    @{Html.RenderPartial("_ViewProductionPriceSheets");}
+
+    @{Html.RenderPartial("_ViewQuotes");}
+
+    @{Html.RenderPartial("_ViewProductionOrders");}
+
+    @{Html.RenderPartial("_ViewShipments");}
+</div>
+
+<script type="text/javascript">
+    var currentUser = @Html.Raw(Json.Encode(Model.CurrentUser));
+    var projectId = @Html.Raw(Json.Encode(Model.ProjectId));
+    var projectName = @Html.Raw(Json.Encode(Model.ProjectName));
+    var projectNotes = @Html.Raw(Json.Encode(Model.ProjectNotes));
+    var parts = @Html.Raw(Json.Encode(Model.Parts));
+    var foundryOrders = @Html.Raw(Json.Encode(Model.FoundryOrders));
+    var status = @Html.Raw(Json.Encode(Model.Status));
+
+    var holdExpirationDate = @Html.Raw(Json.Encode(Model.HoldExpirationDateStr));
+    var holdNote = @Html.Raw(Json.Encode(Model.HoldNotes));
+    var cancelNote = @Html.Raw(Json.Encode(Model.CancelNotes));
+    var canceledDate = @Html.Raw(Json.Encode(Model.CanceledDateStr));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-project-summary.js")
+}

@@ -1,0 +1,260 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.BillOfLadingViewModel
+
+<div class="row" style="padding: 0;">
+    <nav id="partsNav" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right" style="padding-top: 10px;">
+                    <li><i id="analysisIcon" class="glyphicon glyphicon-print"></i><span id="printBtn" class="nav-icon" title="Shipment Analysis">Shipment Analysis </span></li>
+                    <li><i id="paymentIcon" class="glyphicon glyphicon-print"></i><span id="paymentBtn" class="nav-icon" title="Process for Payment">Process Payment </span></li>
+                    <li><i id="deleteIcon" class="glyphicon glyphicon-trash"></i><span id="deleteBillOfLadingBtn" class="nav-icon" title="Delete">Delete </span></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default" style="margin-bottom: 5px;min-height: 725px;">
+                    <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFive">
+                        <h3 class="panel-title accordion-toggle">
+                            Bill of Lading: @Model.BolNumber - "Details"
+                            <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                        </h3>
+                    </div>
+                    <div id="collapseFive" class="panel-collapse collapse in">
+                        <div class="panel-body" style="min-height: 725px;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.BolNumber)
+                                        @Html.TextBoxFor(m => m.BolNumber, new { @id = "bolNumber", @class = "form-control", @style = "font-size: 12px;padding: 2px 4px;height: 28px;max-width: 220px;", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group input-group-sm">
+                                        @Html.LabelFor(m => m.BolDateStr)
+                                        @Html.TextBoxFor(m => m.BolDateStr, new { @id = "bolDate", @class = "form-control datepicker", @type = "text", @style = "font-size: 12px;padding: 2px 4px;height: 28px;max-width: 220px;", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.Description)
+                                        @Html.TextBoxFor(m => m.Description, new { @id = "description", @class = "form-control", @style = "font-size: 12px;padding: 2px 4px;height: 28px;max-width: 275px;", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.FoundryName)
+                                        @Html.TextBoxFor(m => m.FoundryName, new { @id = "foundryName", @class = "form-control datepicker", @type = "text", @style = "font-size: 12px;padding: 2px 4px;height: 28px;max-width: 220px;", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CustomsNumber)
+                                        @Html.TextBoxFor(m => m.CustomsNumber, new { @id = "customsNumber", @class = "form-control", @style = "font-size: 12px;padding: 2px 4px;height: 28px;max-width: 220px;", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="checkbox checkbox-success">
+                                            <input type="checkbox" id="isCustomsLiquidated" disabled>
+                                            <label for="isCustomsLiquidated" class="control-label">
+                                                <strong>Customs Liquidated</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12 centered">
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.PalletCount)
+                                            @Html.TextBoxFor(m => m.PalletCount, new { @id = "palletCount", @class = "form-control", @style = "font-size: 12px;padding: 2px 4px;margin-right: 25px;height: 28px;max-width: 100px;", @readonly = "readonly" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.GrossWeight)
+                                            <div class="input-group" style="max-width:113px;">
+                                                @Html.TextBoxFor(m => m.GrossWeight, new { @id = "grossWeight", @class = "form-control", @style = "font-size: 12px;padding: 2px 4px;margin-right: 25px;height: 28px;max-width: 100px;", @readonly = "readonly" })
+                                                <span class="input-group-addon">lbs</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.NetWeight)
+                                            <div class="input-group" style="max-width:113px;">
+                                                @Html.TextBoxFor(m => m.NetWeight, new { @id = "netWeight", @class = "form-control", @style = "font-size: 12px;padding: 2px 4px;margin-right: 25px;height: 28px;max-width: 100px;", @readonly = "readonly" })
+                                                <span class="input-group-addon">lbs</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="checkbox checkbox-success checkbox-inline" style="margin-right:10px">
+                                            <input type="checkbox" id="hasLcl" disabled>
+                                            <label for="hasLcl" class="control-label">
+                                                <strong>Lcl</strong>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox checkbox-success checkbox-inline" style="margin-right:10px">
+                                            <input type="checkbox" id="hasDoorMove" disabled>
+                                            <label for="hasDoorMove" class="control-label">
+                                                <strong>Door Move</strong>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox checkbox-success checkbox-inline" style="margin-right:10px">
+                                            <input type="checkbox" id="hasArrivalNotice" disabled>
+                                            <label for="hasArrivalNotice" class="control-label">
+                                                <strong>Arrival Notice</strong>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox checkbox-success checkbox-inline" style="margin-right:10px">
+                                            <input type="checkbox" id="hasOriginals" disabled>
+                                            <label for="hasOriginals" class="control-label">
+                                                <strong>Originals</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.BolNotes)
+                                        @Html.TextAreaFor(m => m.BolNotes, new { @id = "bolNotes", @class = "form-control", @style = "font-size: 12px;overflow-y: scroll;", cols = "50", rows = "5", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.WireInstructions)
+                                        @Html.TextAreaFor(m => m.WireInstructions, new { @id = "wireInstructions", @class = "form-control", @style = "font-size: 12px;overflow-y: scroll;", cols = "50", rows = "5", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" style="min-height: 725px;">
+                <div class="panel panel-default" style="min-height: 725px;">
+                    <div class="panel-heading clearfix" style="padding: 0;background-color: #FFFFFF;border: none;">
+                        <ul class="nav nav-tabs" id="billOfLadingTabs">
+                            <li class="active"><a data-target="#containersTab" data-toggle="tab" style="padding: 8px 10px;font-size: 15px;">Containers</a></li>
+                            <li><a data-target="#partsTab" data-toggle="tab" style="padding: 8px 10px;font-size: 15px;color: black;">Parts</a></li>
+                            <li><a data-target="#purchaseOrdersTab" data-toggle="tab" style="padding: 8px 10px;font-size: 15px;color: black;">Purchase Orders</a></li>
+                            <li><a data-target="#foundryInvoiceTab" data-toggle="tab" style="padding: 8px 10px;font-size: 15px;color: black;">Foundry Invoice</a></li>
+                            <li><a data-target="#palletTab" data-toggle="tab" style="padding: 8px 10px;font-size: 15px;color: black;">Pallets</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body tab-content" style="min-height: 725px;">
+                        <div class="tab-pane active" id="containersTab">
+                            <table id="containers" class="table table-bordered dt-responsive nowrap display compact"></table>
+                        </div>
+                        <div class="tab-pane" id="partsTab">
+                            <table id="containerParts" class="table table-bordered dt-responsive nowrap display compact"></table>
+                        </div>
+                        <div class="tab-pane" id="purchaseOrdersTab">
+                            <table id="purchaseOrders" class="table table-bordered dt-responsive nowrap display compact"></table>
+                        </div>
+                        <div class="tab-pane" id="foundryInvoiceTab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.FoundryInvoice.InvoiceNumber)
+                                            @Html.TextBoxFor(m => m.FoundryInvoice.InvoiceNumber, new { @id = "invoiceNumber", @class = "form-control", @style = "font-size: 12px;padding: 2px 4px;height: 28px;width: 150px;", @readonly = "readonly" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.FoundryInvoice.InvoiceAmount)
+                                            <div class="input-group">
+                                                <span class="input-group-addon glyphicon glyphicon-usd" style="top:unset"></span>
+                                                @Html.TextBoxFor(m => m.FoundryInvoice.InvoiceAmount, new { @id = "invoiceTotal", @class = "form-control", @style = "font-size: 12px;padding: 2px 4px;height: 28px;width: 100px;", @required = "required", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.FoundryInvoice.ScheduledPaymentDateStr)
+                                            @Html.TextBoxFor(m => m.FoundryInvoice.ScheduledPaymentDateStr, new { @id = "scheduledDate", @class = "form-control datepicker", @type = "text", @style = "font-size: 12px;padding: 2px 4px;height: 28px;width: 100px;", @readonly = "readonly" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.FoundryInvoice.ActualPaymentDateStr)
+                                            @Html.TextBoxFor(m => m.FoundryInvoice.ActualPaymentDateStr, new { @id = "actualDate", @class = "form-control datepicker", @type = "text", @style = "font-size: 12px;padding: 2px 4px;height: 28px;width: 100px;", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.FoundryInvoice.AirFreight)
+                                            <div class="input-group">
+                                                <span class="input-group-addon glyphicon glyphicon-usd" style="top:unset"></span>
+                                                @Html.TextBoxFor(m => m.FoundryInvoice.AirFreight, new { @id = "airFreight", @class = "form-control", @style = "font-size: 12px;padding: 2px 4px;height: 28px;width: 100px;", @required = "required", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.FoundryInvoice.Notes)
+                                        @Html.TextAreaFor(m => m.FoundryInvoice.Notes, new { @id = "invoiceNotes", @class = "form-control", @style = "font-size: 12px;overflow-y: scroll;", cols = "50", rows = "5", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div id="bucketDiv" class="col-md-8">
+                                    <table id="buckets" class="table dt-responsive nowrap display compact"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="palletTab">
+                            <table id="pallets" class="table table-bordered dt-responsive nowrap display compact"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewShipCodeNotesDiv">
+        @{Html.RenderPartial("_ViewShipCodeNotes");}
+    </div>
+
+    <div id="viewContainerPartDetailDiv">
+        @{Html.Action("_ViewContainerPartDetails");}
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var containers = @Html.Raw(Json.Encode(Model.Containers));
+    var bolId = @Html.Raw(Json.Encode(Model.BillOfLadingId));
+    var containerParts = @Html.Raw(Json.Encode(Model.ContainerParts));
+    var purchaseOrders = @Html.Raw(Json.Encode(Model.PurchaseOrders));
+    var buckets = @Html.Raw(Json.Encode(Model.FoundryInvoice.Buckets));
+    var isCustomsLiquidated = @Html.Raw(Json.Encode(Model.IsCustomsLiquidated));
+    var hasLcl = @Html.Raw(Json.Encode(Model.HasLcl));
+    var hasDoorMove = @Html.Raw(Json.Encode(Model.HasDoorMove));
+    var hasBeenAnalyzed = @Html.Raw(Json.Encode(Model.HasBeenAnalyzed));
+    var hasArrivalNotice = @Html.Raw(Json.Encode(Model.HasArrivalNotice));
+    var hasOriginals = @Html.Raw(Json.Encode(Model.HasOriginalDocuments));
+    var pallets = @Html.Raw(Json.Encode(Model.Pallets));
+    var hasBeenProcessed = @Html.Raw(Json.Encode(Model.FoundryInvoice.HasBeenProcessed));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-bol-detail.js")
+}
+
+
+
+
+
+
+
+

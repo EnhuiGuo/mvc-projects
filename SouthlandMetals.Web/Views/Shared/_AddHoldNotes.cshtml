@@ -1,0 +1,47 @@
+﻿@model SouthlandMetals.Web.Models.NotesViewModel
+
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="addHoldNotesModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-sm">
+        <div class="modal-content">
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Hold Note</h4>
+            </div>
+            <div class="alert alert-success alert-dismissable alert-modal successAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <div class="alert alert-danger alert-dismissable alert-modal errorAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <br />
+            <div id="addQuoteHoldNoteForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.HoldExpirationDate, new { @class = "col-md-4 control-label" })
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(m => m.HoldExpirationDate, new { @id = "holdExpirationDate", @class = "form-control datepicker", @type = "text", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.HoldNotes, new { @class = "col-md-4 control-label" })
+                            <div class="col-md-8">
+                                @Html.TextAreaFor(m => m.HoldNotes, new { @id = "holdNotes", @rows = "5", @cols = "65", @style = "font-size: 13px;overflow-y: scroll;", @autofocus = "", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="modal-footer">
+                    <button id="saveHoldNoteBtn" class="btn btn-sm modal-save-update-btn" type="submit" title="Save Hold Note">Save</button>
+                    <button id="cancelAddHoldNoteBtn" class="btn btn-sm btn-default" type="button" data-dismiss="modal" title="Cancel Adding Hold Note">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

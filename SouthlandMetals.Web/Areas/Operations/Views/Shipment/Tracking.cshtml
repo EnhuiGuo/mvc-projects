@@ -1,0 +1,196 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.ShipmentViewModel
+
+<br />
+
+<div class="row">
+    <div class="col-md-10 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                    <h3 class="panel-title accordion-toggle">
+                        Filter Shipments
+                        <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                    </h3>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <br />
+                                <div class="row col-md-12">
+                                    <div class="col-md-12">
+                                        <div class="radio radio-danger radio-inline">
+                                            <input type="radio" id="all" name="Status" value="All">
+                                            <label for="all" class="control-label col-md-5">
+                                                All
+                                            </label>
+                                        </div>
+                                        <div class="radio radio-danger radio-inline">
+                                            <input type="radio" id="open" name="Status" value="Open" checked>
+                                            <label for="open" class="control-label col-md-5">
+                                                Open
+                                            </label>
+                                        </div>
+                                        <div class="radio radio-danger radio-inline">
+                                            <input type="radio" id="completed" name="Status" value="Completed">
+                                            <label for="completed" class="control-label col-md-5">
+                                                Completed
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <br />
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.CustomerId, new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(m => m.CustomerId, Model.SelectableCustomers, new { @id = "customerId", @class = "form-control", autofocus = "autofocus"})
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.OrderNumber, new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.TextBoxFor(m => m.OrderNumber, new { @id = "purchaseOrder", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.InvoiceNumber, new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.TextBoxFor(m => m.InvoiceNumber, new { @id = "invoiceNumber", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <br />
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.ShipCode, new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.TextBoxFor(m => m.ShipCode, new { @id = "shipCode", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.FoundryId, new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(m => m.FoundryId, Model.SelectableFoundries, new { @id = "foundryId", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.ContainerNumber, new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.TextBoxFor(m => m.ContainerNumber, new { @id = "containerNumber", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <br />
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.VesselId, new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(m => m.VesselId, Model.SelectableVessels, new { @id = "searchVesselId", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.BolNumber, new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.TextBoxFor(m => m.BolNumber, new { @id = "bolNumber", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.CustomsNumber, new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.TextBoxFor(m => m.CustomsNumber, new { @id = "customsNumber", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <button id="filterBtn" class="btn btn-sm btn-danger" style="width: 200px;">Filter</button>
+                                        <button id="resetBtn" class="btn btn-sm btn-danger" style="width: 200px;">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-10 centered">
+                <div class="panel">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <div class="panel-title">
+                                Shipments
+                                <div id="addShipment" class="pull-right">
+                                    <span id="addShipmentBtn" class="glyphicon glyphicon-plus" title="Add Shipment"></span>
+                                    <span style="font-size: 14px;" title="Add Shipment"> Add Shipment</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table id="shipments" class="table table-bordered dt-responsive nowrap"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-10 centered">
+                <div class="panel">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <div class="panel-title">
+                                Bills of Lading
+                                <div id="addBol" class="pull-right">
+                                    <span id="addBolBtn" class="glyphicon glyphicon-plus" title="Add Bill Of Lading"></span>
+                                    <span style="font-size: 14px;" title="Add Bill Of Lading"> Add Bill Of Lading</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table id="bols" class="table table-bordered dt-responsive nowrap"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addShipmentDiv">
+    @{Html.RenderPartial("_AddShipment");}
+</div>
+<div id="editShipmentDiv">
+    @{Html.RenderPartial("_EditShipment");}
+</div>
+<div id="receivingDiv">
+    @{Html.RenderPartial("_Receiving");}
+</div>
+
+<script type="text/javascript">
+    var shipments = @Html.Raw(Json.Encode(Model.Shipments));
+    var receiptDate = @Html.Raw(Json.Encode(Model.ReceiptDateStr));
+    var isComplete = @Html.Raw(Json.Encode(Model.IsComplete));
+    var completedDate = @Html.Raw(Json.Encode(Model.CompletedDate));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-shipment-tracking.js")
+}
+
+
+
+
+

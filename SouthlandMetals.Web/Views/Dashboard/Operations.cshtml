@@ -1,0 +1,20 @@
+﻿@model SouthlandMetals.Web.Models.DashboardViewModel
+
+<h2>Operations Dashboard</h2>
+
+<br />
+
+<div class="row">
+    <div class="col-md-3 centered">
+        <div class="row">
+            <a href="@Url.Action("Create", "Rfq", new { area = "Operations" })" class="btn btn-primary btn-block">
+                Create RFQ
+            </a>
+            <br />
+            <a href="@Url.Action("Create", "Quote", new { area = "Operations" })" class="btn btn-success btn-block">
+                Create Quote
+            </a>
+        </div>
+    </div>
+</div>
+

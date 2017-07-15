@@ -1,0 +1,43 @@
+﻿@model SouthlandMetals.Web.Areas.Administration.Models.HtsNumberViewModel
+
+<br />
+
+<div class="row">
+    <div class="col-md-10 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <div class="panel-title">
+                        HtsNumbers
+                        <div id="addHtsNumber" class="pull-right">
+                            <span id="addHtsNumberBtn" class="glyphicon glyphicon-plus" title="Add Hts Number"></span>
+                            <span style="font-size: 14px;" title="Add Hts Number"> Add Hts Number</span>
+                        </div>
+                    </div>  
+                </div>
+                <div class="panel-body">
+                    <table id="htsNumbers" class="table table-bordered table-hover table-responsive responsive no-wrap"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addHtsNumberDiv">
+        @{Html.RenderPartial("_AddHtsNumber");}
+    </div>
+    <div id="editHtsNumberDiv">
+        @{Html.RenderPartial("_EditHtsNumber");}
+    </div>
+</div>
+
+<script type="text/javascript">
+    var htsNumbers = @Html.Raw(Json.Encode(Model.HtsNumbers));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-htsNumbers.js")
+}
+
+
+
+
+

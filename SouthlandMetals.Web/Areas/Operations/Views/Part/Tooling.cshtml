@@ -1,0 +1,93 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.PartViewModel
+<br />
+<div class="row">
+    <div class="col-md-9 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">
+                        Tooling
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.PartNumber, new { @class = "control-label col-md-3" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.PartNumber, new { @id = "partNumber", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-offset-3" style="padding-left:15px;">
+                                <button id="searchBtn" class="btn btn-sm btn-danger">Search</button>
+                                <button id="resetBtn" class="btn btn-sm btn-default">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-9 centered">
+        <div class="panel panel-default">
+            <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSeven">
+                <h3 class="panel-title accordion-toggle">
+                    Tooling
+                    <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                </h3>
+            </div>
+            <div id="collapseSeven" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.ToolingOrderNumber, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.ToolingOrderNumber, new { @id = "toolingOrderNumber", @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <br /><br />
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.ToolingDescription, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.TextAreaFor(m => m.ToolingDescription, new { @id = "toolingDescription", @rows = "5", @cols = "65", @style = "font-size: 13px;overflow-y: scroll;", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Notes, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.TextAreaFor(m => m.Notes, new { @id = "notes", @rows = "5", @cols = "65", @style = "font-size: 13px;overflow-y: scroll;", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-part-tooling.js")
+}
+
+
+
+
+
+
+

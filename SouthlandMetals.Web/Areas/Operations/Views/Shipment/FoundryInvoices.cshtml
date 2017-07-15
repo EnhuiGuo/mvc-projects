@@ -1,0 +1,111 @@
+﻿@model SouthlandMetals.Web.Models.FoundryInvoiceViewModel
+
+<br />
+
+<div class="row">
+    <div class="col-md-10 centered">
+        <div class="panel panel-default">
+            <div class="panel-heading parts" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                <h3 class="panel-title accordion-toggle">
+                    Search Criteria
+                    <i class="glyphicon glyphicon-menu-right glyphicon-menu-down pull-right panel-icon"></i>
+                </h3>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-9 centered">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.InvoiceNumber, new { @class = "control-label col-md-3" })
+                                            <div class="col-md-8">
+                                                @Html.TextBoxFor(m => m.InvoiceNumber, new { @id = "invoiceNumber", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.FoundryId, new { @class = "control-label col-md-3" })
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(m => m.FoundryId, Model.SelectableFoundries, new { @id = "foundryId", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.FromDateStr, new { @class = "control-label col-md-3" })
+                                            <div class="col-md-8">
+                                                @Html.TextBoxFor(m => m.FromDateStr, new { @id = "fromDate", @class = "form-control datepicker", @type = "text" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.ToDateStr, new { @class = "control-label col-md-3" })
+                                            <div class="col-md-8">
+                                                @Html.TextBoxFor(m => m.ToDateStr, new { @id = "toDate", @class = "form-control datepicker", @type = "text" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6 centered">
+                                    <div class="col-md-3 centered">
+                                        <div class="checkbox checkbox-success">
+                                            <input type="checkbox" id="unscheduled">
+                                            <label for="unscheduled" class="control-label col-md-5">
+                                                <strong>Unscheduled</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button id="searchBtn" class="btn btn-sm btn-danger" style="width: 200px;">Search</button>
+                                    <button id="resetBtn" class="btn btn-sm btn-default" style="width: 200px;">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-10 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">
+                        Invoices
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="invoices" class="table table-bordered dt-responsive nowrap"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-shipment-foundryInvoices.js")
+}
+
+
+
+
+
+
+
+
+

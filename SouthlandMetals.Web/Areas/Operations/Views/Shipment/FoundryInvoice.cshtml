@@ -1,0 +1,106 @@
+﻿@model SouthlandMetals.Web.Models.FoundryInvoiceViewModel
+
+<div class="row" style="padding: 0;">
+    <nav id="partsNav" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="panel panel-default" style="margin-bottom:5px;max-width:2000px;margin:auto">
+    <div class="panel-heading">
+        <div class="clearfix">
+            <h3 class="panel-title text-noticed">
+                Number: @Model.InvoiceNumber
+            </h3>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.InvoiceNumber)
+                        @Html.TextBoxFor(m => m.InvoiceNumber, new { @id = "invoiceNumber", @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.InvoiceAmount)
+                        @Html.TextBoxFor(m => m.InvoiceAmount, new { @id = "invoiceAmount", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ScheduledPaymentDateStr)
+                        @Html.TextBoxFor(m => m.ScheduledPaymentDateStr, new { @id = "scheduledPaymentDate", @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ActualPaymentDateStr)
+                        @Html.TextBoxFor(m => m.ActualPaymentDateStr, new { @id = "actualPaymentDate", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Notes)
+                    @Html.TextAreaFor(m => m.Notes, new { @id = "invoiceNotes", @class = "form-control", @style = "font-size: 12px;overflow-y: scroll;", cols = "50", rows = "5" })
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div id="bucketDiv" class="col-md-8">
+                <table id="buckets" class="table dt-responsive nowrap display compact"></table>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <div id="addDebitMemo" class="pull-right">
+                        <span id="addDebitMemoBtn" class="glyphicon glyphicon-plus" style="font-size: 16px;color: #d43f3a;" title="Add Debit Memo"></span>
+                        <span style="font-size: 16px;" title="Add Debit Memo"> Add Debit Memo</span>
+                    </div>
+                    <table id="debitMemos" class="table dt-responsive nowrap display compact"></table>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <p class="pull-right" style="font-size: 18px;"><strong>Total Debits: <span id="totalDebits" class="text-info"></span></strong></p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <table id="creditMemos" class="table dt-responsive nowrap display compact"></table>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <p class="pull-right" style="font-size: 18px;"><strong>Total Credits: -<span id="totalCredits" class="text-info" style="color: red"></span></strong></p>
+                    </div>
+                    <br />
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <p class="pull-right" style="font-size: 18px;"><strong>Difference: -<span id="memoDifference" class="text-info" style="color: blue"></span></strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var foundryInvoiceId = @Html.Raw(Json.Encode(Model.FoundryInvoiceId));
+    var buckets = @Html.Raw(Json.Encode(Model.Buckets));
+    var debitMemos = @Html.Raw(Json.Encode(Model.DebitMemos));
+    var creditMemos = [];
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-shipment-foundryInvoice.js")
+}
+
+
+
+
+

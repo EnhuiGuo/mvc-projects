@@ -1,0 +1,95 @@
+﻿@model SouthlandMetals.Web.Areas.Operations.Models.CustomerOrderViewModel
+
+<div class="row" style="padding: 0;">
+    <nav id="customerOrderNav" class="navbar navbar-inverse" style="min-height: 40px;background-color: #AFAFAF;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right" style="padding-top: 10px;">
+                    <li>
+                        <i class="glyphicon glyphicon-print" style="color: blue;"></i>
+                        <span id="printOpenCustomerOrdersBtn" style="padding: 10px;color: white;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: 14px;" title="Print Open Customer Orders">Print Open Customer Orders </span>
+                    </li>
+                    <li>
+                        <i class="glyphicon glyphicon-print" style="color: blue;"></i>
+                        <span id="printUnattachedCustomerOrdersBtn" style="padding: 10px;color: white;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: 14px;" title="Print Unattached Customer Orders">Print Unattached Customer Orders </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-11 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix" style="background-color: white">
+                    <h3 class="panel-title" style="color: #333333;">
+                        Customer Orders
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="padding-left:5px">
+                        <div class="pull-left">
+                            <div class="radio radio-danger radio-inline">
+                                <input type="radio" id="open" name="Status" value="Open">
+                                <label for="open" class="control-label">
+                                    Open
+                                </label>
+                            </div>
+                            <div class="radio radio-danger radio-inline">
+                                <input type="radio" id="hold" name="Status" value="On Hold">
+                                <label for="hold" class="control-label">
+                                    On Hold
+                                </label>
+                            </div>
+                            <div class="radio radio-danger radio-inline">
+                                <input type="radio" id="completed" name="Status" value="Completed">
+                                <label for="completed" class="control-label">
+                                    Completed
+                                </label>
+                            </div>
+                            <div class="radio radio-danger radio-inline">
+                                <input type="radio" id="canceled" name="Status" value="Canceled">
+                                <label for="canceled" class="control-label">
+                                    Canceled
+                                </label>
+                            </div>
+                        </div>
+                        <div id="addOrder" class="pull-right">
+                            <span id="addOrderBtn" class="glyphicon glyphicon-plus" style="font-size: 12px;color: #d43f3a;" title="Add Customer P.O"></span>
+                            <span style="font-size: 14px;" title="Add Customer P.O"> Add Customer Order</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="padding:10px; margin: 10px 0px;">
+                        <table id="customerOrders" class="table table-bordered dt-responsive" cellspacing="0" style="margin-top:5px;width:100%"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="printOpenCustomerOrdersDiv">
+    @{ Html.RenderPartial("_PrintOpenCustomerOrders"); }
+</div>
+
+<div id="printUnattachedCustomerOrdersDiv">
+    @{ Html.RenderPartial("_PrintUnattachedCustomerOrders"); }
+</div>
+
+<script type="text/javascript">
+    var customerOrders = @Html.Raw(Json.Encode(Model.CustomerOrders));
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/southlandMetals-customerOrders.js")
+}
+

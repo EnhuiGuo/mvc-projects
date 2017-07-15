@@ -1,0 +1,49 @@
+﻿<div class="modal fade" data-keyboard="false" data-backdrop="static" id="addPartsModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-lg" style="min-width: 60%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Parts</h4>
+            </div>
+            <div class="alert alert-success alert-dismissable alert-modal successAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <div class="alert alert-danger alert-dismissable alert-modal errorAlert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div>
+                            <label class="control-label" style="display:inline">Date Range:</label>
+                            <input id="fromDate" class="form-control datepicker" style="max-width:110px;display:inline" placeholder="From" />
+                            <input id="toDate" class="form-control datepicker" style="max-width:110px;display:inline;" placeholder="To" />
+                            <button id="getPriceSheetBtn" class="btn btn-danger">Get Price Sheets</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding:20px">
+                <div class="col-md-12 centered">
+                    <div class='scrolledTable'>
+                        <table id="priceSheetTable" class="table table-bordered dt-responsive no-wrap">
+                        </table>
+                    </div>
+                    <br />
+                </div>
+                <div>
+                    <button id="choicePriceSheetBtn" class="btn btn-danger pull-right" style="margin-right:15px">Save</button>
+                    <button class="btn btn-default pull-right" style="margin-right:15px" onclick="CloseModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    CloseModal = function () {
+        $('#addPartsModal').modal('hide');
+    }
+</script>

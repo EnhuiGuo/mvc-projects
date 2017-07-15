@@ -1,0 +1,42 @@
+﻿@model SouthlandMetals.Web.Areas.Administration.Models.CustomerViewModel
+<br />
+
+<div class="row">
+    <div class="col-md-10 centered">
+        <div class="panel">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <div class="panel-title">
+                        Customers
+                    </div>  
+                </div>
+                <div class="panel-body">
+                    <table id="customers" class="table table-bordered dt-responsive nowrap"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addCustomerDiv">
+        @{Html.RenderPartial("_AddCustomer");}
+    </div>
+    <div id="editCustomerDiv">
+        @{Html.RenderPartial("_EditCustomer");}
+    </div>
+    <div id="orderTermsDiv">
+        @{Html.RenderPartial("_OrderTerms");}
+    </div>
+    <div id="updateSettingsDiv">
+        @{Html.RenderPartial("_UpdateSettings");}
+    </div>
+    <div id="viewCustomerAddressesDiv">
+        @{Html.RenderPartial("_ViewCustomerAddresses");}
+    </div>
+</div>
+
+<script type="text/javascript">
+    var customers = @Html.Raw(Json.Encode(Model.Customers));
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/southlandMetals-customers.js")
+}

@@ -1,0 +1,64 @@
+﻿
+<!-- Add Email Address Modal -->
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="float:left">Email</h4>
+            </div>
+            <form id="emailForm">
+                <div id="emailError"></div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">To:</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" id="toEmailAddress" name="ToEmail" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="control-label col-md-3">CC:</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" id="copyEmailAddress" name="CopyEmail" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Subject:</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" id="subject" name="Subject" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Message:</label>
+                                <div class="col-md-9">
+                                    <textarea class="form-control" id="message" name="Message" rows="10" cols="75" style="font-size: 13px;overflow-y: scroll;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-md-offset-3">
+                            <input id="attachment" type="file" name="Attachment" style="padding:10px;" />
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+                <div class="modal-footer">
+                    <button id="sendEmailBtn" type="submit" class="btn btn-sm modal-save-update-btn" title="Send Email">Send</button>
+                    <button id="cancelEmailBtn" class="btn btn-sm btn-default" type="button" data-dismiss="modal" title="Cancel Sending Email">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

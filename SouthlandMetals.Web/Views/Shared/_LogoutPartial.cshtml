@@ -1,0 +1,87 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+        <ul class="nav navbar-nav pull-right toolbar">
+
+            <li id="noti_Container" class="dropdown">
+                <div id="notificationCounter"></div>
+                    <a href="#" class="dropdown-toggle pull-right" data-toggle="dropdown"><span style="padding-top: 11px;font-size: 16px;color: white;"><i class="fa fa-bell"></i></span></a>
+                <div id="messages" class="dropdown-menu pull-right" style="list-style-type: none;padding-left: 10px;padding-right: 10px;height: 400px; width: 700px;overflow-y: scroll;">
+                    <h5 style="padding-bottom: 15px;border-bottom: 1px solid grey">Notifications</h5>
+                    <table id="notificationsTable" class="table table-hover table-responsive responsive compact nowrap">
+                        <thead>
+                            <tr>
+                                <th>Message</th>
+                                <th>Sender</th>
+                                <th>Date</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody id="notificationTab"></tbody>
+                    </table>
+                </div>
+            </li>
+
+            <!-- User Menu -->
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle pull-right" data-toggle="dropdown"><span>@User.Identity.Name <i class="fa fa-caret-down"></i></span></a>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <div class="dropdown-user-info">
+                            <h5>Hello, @ViewData["FullName"]</h5>
+                            <small>@ViewData["Email"]</small>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href='@Url.Action("Manage", "Account", new RouteValueDictionary(new { area = "", id = @User.Identity.GetUserName() }))'><span><i class="fa fa-gear"></i> My Profile</span></a></li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Sign Out</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav pull-right toolbar">
+
+        <li id="noti_Container" class="dropdown">
+            <div id="notificationCounter"></div>
+            <a href="#" class="dropdown-toggle pull-right" data-toggle="dropdown"><span style="padding-top: 11px;font-size: 16px;color: white;"><i class="fa fa-bell"></i></span></a>
+            <div id="messages" class="dropdown-menu pull-right" style="list-style-type: none;padding-left: 10px;padding-right: 10px;height: 400px; width: 700px;overflow-y: scroll;">
+                <h5 style="padding-bottom: 15px;border-bottom: 1px solid grey">Notifications</h5>
+                <table id="notificationsTable" class="table table-hover table-responsive responsive compact nowrap">
+                    <thead>
+                        <tr>
+                            <th>Message</th>
+                            <th>Sender</th>
+                            <th>Date</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notificationTab"></tbody>
+                </table>
+            </div>
+        </li>
+
+        <!-- User Menu -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle pull-right" data-toggle="dropdown"><span>@User.Identity.Name <i class="fa fa-caret-down"></i></span></a>
+            <ul class="dropdown-menu pull-right">
+                <li>
+                    <div class="dropdown-user-info">
+                        <h5>Hello, @User.Identity.Name</h5>
+                        <small>mpeyton@compsysar.com</small>
+                    </div>
+                </li>
+                <li class="divider"></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Sign Out</a></li>
+            </ul>
+        </li>
+
+    </ul>
+}
